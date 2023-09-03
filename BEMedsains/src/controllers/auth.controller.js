@@ -1,17 +1,24 @@
-module.exports = {
-  register: async (req, res) => {
-    try {
-      res.status(200).send({
-        message: "Register",
-      });
-    } catch (error) {}
-  },
+//Register Controller
+const register = async (req, res) => {
+  try {
+    return res.status(200).send({ message: "register" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: error.message || error });
+  }
+};
 
-  login: async (req, res) => {
-    try {
-      res.status(200).send({
-        message: "Login",
-      });
-    } catch (error) {}
-  },
+//Login Controller
+const login = async (req, res) => {
+  try {
+    return res.status(200).send({ message: "Successfully logged in!" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: error.message || error });
+  }
+};
+
+module.exports = {
+  register,
+  login,
 };
