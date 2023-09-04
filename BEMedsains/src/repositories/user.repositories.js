@@ -26,6 +26,7 @@ class UserRepository {
 
   async getUser(userData) {
     try {
+      console.log(userData);
       return await Account.findOne({
         where: { [Op.or]: [{ username: userData }, { email: userData }] },
       });
