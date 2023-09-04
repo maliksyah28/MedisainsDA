@@ -26,7 +26,6 @@ class UserRepository {
 
   async getUser(userData) {
     try {
-      console.log(userData);
       return await Account.findOne({
         where: { [Op.or]: [{ username: userData }, { email: userData }] },
       });
@@ -37,12 +36,20 @@ class UserRepository {
 
   async getAllUsers() {
     try {
-      return await User.find();
+      return await Account.find();   
     } catch (error) {
       throw error;
     }
   }
-
+  async patchUser(passwordUser,dataUser) {
+    try {
+      await dataUser.update({ password: passwordUser })
+      return dataUser.save()
+      
+    } catch (error) {
+      throw error
+    }
+  }
   // Add other CRUD operations as needed
 }
 
