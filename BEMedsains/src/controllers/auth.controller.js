@@ -41,13 +41,13 @@ const login = async (req, res) => {
     let checkPassword = compare(password, getUser.password);
     // console.log(getUser.password);
     if (!checkPassword) {
-      throw { message: "username atau password salaha", statusCode: 500 };
+      throw { message: "username atau password salah", statusCode: 500 };
     }
 
     const userdata = getUser.dataValues;
     const token = createToken({
       userId: userdata.id,
-      first_name: userdata.fullname,
+      fullname: userdata.fullname,
     });
     return res.status(200).send({
       message: "Successfully logged in!",
@@ -62,7 +62,7 @@ const changePassword = async (req, res) => {
     const { oldPassword, newPassword, ConfirmPassword, id } = req.body;
 
     const dataUser = await userRepository.getUserById(id);
-    console.log(dataUser.dataValues);
+    // console.log(dataUser.dataValues);
     const compareold = compare(oldPassword, dataUser.password);
     if (!compareold) {
       res.send({ code: 400, message: "Password incorrect" });
