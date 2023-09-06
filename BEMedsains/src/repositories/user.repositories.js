@@ -27,7 +27,9 @@ class UserRepository {
   async getUser(userData) {
     try {
       return await Account.findOne({
-        where: { [Op.or]: [{ username: userData }, { email: userData }] },
+        where: {
+          [Op.or]: [{ username: userData }, { email: userData }, { userData }],
+        },
       });
     } catch (error) {
       throw error;

@@ -8,7 +8,7 @@ const auth = async (req, res, next) => {
     const verifiedToken = verifyToken(token);
     const responsGetUser = await Account.findOne({
       where: {
-        userId: verifiedToken.userId,
+        id: verifiedToken.id,
       },
     });
 
