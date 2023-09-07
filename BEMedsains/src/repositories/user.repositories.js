@@ -18,7 +18,7 @@ class UserRepository {
 
   async getUserById(id) {
     try {
-      return await Account.findOne({ where: { id } });
+      return await Account.findOne({ where: { id: id } });
     } catch (error) {
       throw error;
     }
@@ -36,7 +36,6 @@ class UserRepository {
         },
       });
     } catch (error) {
-      console.log(error);
       throw error;
     }
   }

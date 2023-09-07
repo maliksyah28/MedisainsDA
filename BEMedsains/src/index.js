@@ -17,8 +17,9 @@ app.get("/api", (req, res) => {
 });
 
 // Routers
-const { authRouters } = require("./routers");
+const { authRouters, userRouters } = require("./routers");
 app.use("/auth", authRouters);
+app.use("/user", userRouters);
 
 app.use((error, req, res, next) => {
   console.log({ error });

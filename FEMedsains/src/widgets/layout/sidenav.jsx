@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import {
   Avatar,
@@ -10,12 +10,18 @@ import {
 import { useMaterialTailwindController, setOpenSidenav } from "@/context";
 
 export function Sidenav({ brandImg, brandName, routes }) {
+  const navigate = useNavigate();
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavColor, sidenavType, openSidenav } = controller;
   const sidenavTypes = {
     dark: "bg-gradient-to-br from-blue-gray-800 to-blue-gray-900",
     white: "bg-white shadow-lg",
     transparent: "bg-transparent",
+  };
+
+  const onLogoutHandler = () => {
+    localStorage.removeItem("accessToken");
+    navigate("/auth/sign-in");
   };
 
   return (
@@ -93,6 +99,13 @@ export function Sidenav({ brandImg, brandName, routes }) {
             ))}
           </ul>
         ))}
+        <div className="bottom-0 mx-auto w-fit">
+          <Button variant={"gradient"} onClick={onLogoutHandler}>
+            <Typography color="inherit" className="font-medium capitalize">
+              Logout
+            </Typography>
+          </Button>
+        </div>
       </div>
     </aside>
   );
