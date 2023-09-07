@@ -53,7 +53,7 @@ export function Profile() {
             <div className="w-96">
               <Tabs value="app">
                 <TabsHeader>
-                  <Tab value="app">
+                  <Tab value="app" onClick={() => alert("kambing")}>
                     <HomeIcon className="-mt-1 mr-2 inline-block h-5 w-5" />
                     App
                   </Tab>
