@@ -28,28 +28,32 @@ class UserRepository {
     try {
       return await Account.findOne({
         where: {
-          [Op.or]: [{ username: userData }, { email: userData }, { userData }],
+          [Op.or]: [
+            { username: userData },
+            { email: userData },
+            { role: userData },
+          ],
         },
       });
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
 
   async getAllUsers() {
     try {
-      return await Account.find();   
+      return await Account.find();
     } catch (error) {
       throw error;
     }
   }
-  async patchUser(passwordUser,dataUser) {
+  async patchUser(passwordUser, dataUser) {
     try {
-      await dataUser.update({ password: passwordUser })
-      return dataUser.save()
-      
+      await dataUser.update({ password: passwordUser });
+      return dataUser.save();
     } catch (error) {
-      throw error
+      throw error;
     }
   }
   // Add other CRUD operations as needed
