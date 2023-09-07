@@ -9,8 +9,41 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
+import { useQuery, useMutation, useQueryClient } from "react-query";
+import { registerAdmin } from "@/api/userApi";
+import { useState } from "react";
 
 export function SignUp() {
+  const queryClient = useQueryClient();
+  const [addNewUser, setAddNewUser] = useState({
+    username: "",
+    email: "",
+    fullname: "",
+    password: "",
+    role: 1,
+  });
+
+  const registerAdminMutation = useMutation(registerAdmin, {
+    onSuccess: (data) => {
+      // queryClient.invalidateQueries("users");
+      alert(data.data.message);
+    },
+    onError: (data) => {
+      alert(data.response.data.message);
+    },
+  });
+
+  const onRegisterAdmin = () => {
+    registerAdminMutation.mutate(addNewUser);
+    setAddNewUser({
+      username: "",
+      email: "",
+      fullname: "",
+      password: "",
+      role: 1,
+    });
+  };
+
   return (
     <>
       <img
@@ -30,15 +63,62 @@ export function SignUp() {
             </Typography>
           </CardHeader>
           <CardBody className="flex flex-col gap-4">
-            <Input label="Name" size="lg" />
-            <Input type="email" label="Email" size="lg" />
-            <Input type="password" label="Password" size="lg" />
-            <div className="-ml-2.5">
+            <Input
+              label="Username"
+              name="username"
+              size="lg"
+              value={addNewUser.username}
+              onChange={(e) =>
+                setAddNewUser({
+                  ...addNewUser,
+                  [e.target.name]: e.target.value,
+                })
+              }
+            />
+            <Input
+              label="Fullname"
+              name="fullname"
+              value={addNewUser.fullname}
+              size="lg"
+              onChange={(e) =>
+                setAddNewUser({
+                  ...addNewUser,
+                  [e.target.name]: e.target.value,
+                })
+              }
+            />
+            <Input
+              type="email"
+              label="Email"
+              value={addNewUser.email}
+              name="email"
+              size="lg"
+              onChange={(e) =>
+                setAddNewUser({
+                  ...addNewUser,
+                  [e.target.name]: e.target.value,
+                })
+              }
+            />
+            <Input
+              type="password"
+              name="password"
+              value={addNewUser.password}
+              label="Password"
+              size="lg"
+              onChange={(e) =>
+                setAddNewUser({
+                  ...addNewUser,
+                  [e.target.name]: e.target.value,
+                })
+              }
+            />
+            {/* <div className="-ml-2.5">
               <Checkbox label="I agree the Terms and Conditions" />
-            </div>
+            </div> */}
           </CardBody>
           <CardFooter className="pt-0">
-            <Button variant="gradient" fullWidth>
+            <Button variant="gradient" fullWidth onClick={onRegisterAdmin}>
               Sign Up
             </Button>
             <Typography variant="small" className="mt-6 flex justify-center">

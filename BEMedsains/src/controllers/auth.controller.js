@@ -20,9 +20,8 @@ const register = async (req, res) => {
 
     return res.status(201).send({ message: "Successfully Register" });
   } catch (error) {
-    return res.send({
+    return res.status(error.statusCode || 500).send({
       message: error.message || error,
-      status: "failed",
       statusCode: error.statusCode,
     });
   }
@@ -32,18 +31,15 @@ const register = async (req, res) => {
 const adminRegister = async (req, res) => {
   try {
     // check user superadmin
-    const checkedUserRole = await userRepository.getUser({ role: 1 });
-
+    const checkedUserRole = await userRepository.getUser(1);
     if (checkedUserRole) throw { message: "Unauthorized", statusCode: 401 };
-
     const newUser = await userRepository.createUser({ ...req.body, role: 1 });
     if (!newUser) throw { message: "Register Failed", statusCode: 500 };
 
     return res.status(201).send({ message: "success register superadmin" });
   } catch (error) {
-    return res.send({
+    return res.status(error.statusCode || 500).send({
       message: error.message || error,
-      status: "failed",
       statusCode: error.statusCode,
     });
   }
