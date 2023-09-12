@@ -6,6 +6,13 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+<<<<<<<< HEAD:FEMedsains/.gitignore
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+.env
+========
+>>>>>>>> 568f9094a1c8d46345a0e58f9934604d2d885d40:FE/.gitignore
 
 node_modules
 dist
