@@ -1,13 +1,24 @@
-import { Box, Button, Flex, Icon, Image, Spacer, Text } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import { HamburgerIcon, EditIcon } from '@chakra-ui/icons';
-import { FaSignOutAlt } from 'react-icons/fa';
-import PasswordManage from '../ChangePassword/ChangePassword';
+import { Box, Button, Flex, Icon, Image, Spacer, Text } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { HamburgerIcon, EditIcon } from "@chakra-ui/icons";
+import { FaSignOutAlt } from "react-icons/fa";
+import PasswordManage from "../ChangePassword/ChangePassword";
+import { logout } from "../../auth/authSlice";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar({ user }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [buttonClicked, setButtonClicked] = useState(false);
   const handleButtonClick = () => {
     setButtonClicked(true);
+  };
+
+  const onLogoutClick = () => {
+    localStorage.removeItem("userInfo");
+    dispatch(logout());
+    navigate("/login");
   };
 
   return (
@@ -84,25 +95,25 @@ export default function Navbar({ user }) {
       <Spacer />
 
       <Flex
-        direction={'row-reverse'}
+        direction={"row"}
         width="max-content"
         mx="auto"
         alignItems="center"
         justify-content="space-between"
       >
+        <Button onClick={handleButtonClick} disabled={buttonClicked} mb="10">
+          <PasswordManage />
+        </Button>
         <Button
           variant="outline"
           bgColor="twitter"
           color="white"
           mb="10"
           _hover={{}}
-          _active={{ color: 'black' }}
+          _active={{ color: "black" }}
           // paddingInline={'10'}
         >
-          <FaSignOutAlt color="white" h="5" w="5" />
-        </Button>
-        <Button onClick={handleButtonClick} disabled={buttonClicked} mb="10">
-          <PasswordManage />
+          <FaSignOutAlt color="white" h="5" w="5" onClick={onLogoutClick} />
         </Button>
       </Flex>
     </Flex>

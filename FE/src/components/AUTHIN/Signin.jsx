@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -8,21 +8,25 @@ import {
   Input,
   Stack,
   Heading,
-} from '@chakra-ui/react';
-import { Navigate, useNavigate, Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../../auth/authSlice';
-import { loginUser } from '../../api/userApi';
+} from "@chakra-ui/react";
+import { Navigate, useNavigate, Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../auth/authSlice";
+import { getUserByToken, loginUser } from "../../api/userApi";
 
 export default function AuthIN() {
   // let local = JSON.parse(localStorage.getItem('userInfo'))
   // if (local.Token == false) { return <Navigate to="/" replace />
-  const [uData, setuData] = useState('');
-  const [password, setPassword] = useState('');
+
+  const [uData, setuData] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  useEffect(() => {
+    const getLocalStorage = localStorage.getItem("userInfo");
+    getLocalStorage && navigate("/");
+  }, []);
 
   //   const [password, setPassword] = useState('');
-  
 
   const dispatch = useDispatch();
 
@@ -40,16 +44,16 @@ export default function AuthIN() {
         password: password,
       };
       const res = await loginUser(body);
-      console.log(res.data.data);
       const data = res.data.data;
-      const action = login(data);
-      dispatch(action);
+      const resUser = await getUserByToken(data.accessToken);
+
+      dispatch(login(resUser.data.data));
       const userInfo = {
         accessToken: data.accessToken,
       };
       const strUser = JSON.stringify(userInfo);
-      localStorage.setItem('userInfo', strUser);
-      navigate('/');
+      localStorage.setItem("userInfo", strUser);
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
