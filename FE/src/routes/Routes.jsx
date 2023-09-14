@@ -11,6 +11,7 @@ function AppRoute() {
       <Route exact path="/" element={<Home />} />
       <Route exact path="/login" element={<Login />} />
       <Route exact path="/registerAdmin" element={<RegisterAdmin />} />
+      
     </Routes>
   );
 }

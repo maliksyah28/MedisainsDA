@@ -19,14 +19,10 @@ export default function AuthIN() {
   // if (local.Token == false) { return <Navigate to="/" replace />
   const [uData, setuData] = useState('');
   const [password, setPassword] = useState('');
-  const [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   //   const [password, setPassword] = useState('');
-  const [RoleLogin, setRoleLogin] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const isError = uData === '';
-  const isError1 = password === '';
+  
 
   const dispatch = useDispatch();
 

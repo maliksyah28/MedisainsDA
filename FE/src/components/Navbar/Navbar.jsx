@@ -1,12 +1,19 @@
-import { Box, Button, Flex, Icon, Image, Spacer, Text } from "@chakra-ui/react";
-import React from "react";
-import { HamburgerIcon, EditIcon } from "@chakra-ui/icons";
+import { Box, Button, Flex, Icon, Image, Spacer, Text } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { HamburgerIcon, EditIcon } from '@chakra-ui/icons';
+import { FaSignOutAlt } from 'react-icons/fa';
+import PasswordManage from '../ChangePassword/ChangePassword';
 
 export default function Navbar({ user }) {
+  const [buttonClicked, setButtonClicked] = useState(false);
+  const handleButtonClick = () => {
+    setButtonClicked(true);
+  };
+
   return (
-    <Flex direction="column" height="100vh" width="20vw" bg="twitter.500">
+    <Flex direction="column" height="100vh" width="20vw" bg="twitter.300">
       <Box mx="auto" w="70%">
-        <Image src="/adminmedbox.svg" h="32" alt="icon" />
+        <Image src="/LOGOMedsains.png" h="40" w="40" alt="icon" />
       </Box>
       <Box
         h="10"
@@ -77,10 +84,11 @@ export default function Navbar({ user }) {
       <Spacer />
 
       <Flex
-        direction="column"
+        direction={'row-reverse'}
         width="max-content"
         mx="auto"
         alignItems="center"
+        justify-content="space-between"
       >
         <Button
           variant="outline"
@@ -88,10 +96,13 @@ export default function Navbar({ user }) {
           color="white"
           mb="10"
           _hover={{}}
-          _active={{ color: "black" }}
-          paddingInline={"10"}
+          _active={{ color: 'black' }}
+          // paddingInline={'10'}
         >
-          Logout
+          <FaSignOutAlt color="white" h="5" w="5" />
+        </Button>
+        <Button onClick={handleButtonClick} disabled={buttonClicked} mb="10">
+          <PasswordManage />
         </Button>
       </Flex>
     </Flex>
