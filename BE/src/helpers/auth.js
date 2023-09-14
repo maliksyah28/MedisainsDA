@@ -4,7 +4,6 @@ const { Account } = require("../../models");
 const auth = async (req, res, next) => {
   try {
     const token = req.token;
-
     const verifiedToken = verifyToken(token);
     const responsGetUser = await Account.findOne({
       where: {

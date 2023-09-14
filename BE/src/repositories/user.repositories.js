@@ -1,6 +1,6 @@
-const { Account } = require('../../models');
-const { Op } = require('sequelize');
-const { compare, hash } = require('../lib/bcrypt');
+const { Account } = require("../../models");
+const { Op } = require("sequelize");
+const { compare, hash } = require("../lib/bcrypt");
 
 class UserRepository {
   async createUser({ password, ...userData }) {

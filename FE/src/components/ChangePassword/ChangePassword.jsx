@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Link, Navigate } from 'react-router-dom';
-import { changePass, getUserByToken } from '../../api/userApi';
+import React, { useState, useRef, useEffect } from "react";
+import { Link, Navigate } from "react-router-dom";
+import { changePass, getUserByToken } from "../../api/userApi";
 import {
   Modal,
   ModalOverlay,
@@ -14,8 +14,8 @@ import {
   FormControl,
   FormLabel,
   Input,
-} from '@chakra-ui/react';
-import { EditIcon } from '@chakra-ui/icons';
+} from "@chakra-ui/react";
+import { EditIcon } from "@chakra-ui/icons";
 export default function PasswordManage() {
   const OverlayOne = () => (
     <ModalOverlay
@@ -25,9 +25,9 @@ export default function PasswordManage() {
   );
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [overlay, setOverlay] = React.useState(<OverlayOne />);
-  const [oldPassword, setOldPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [ConfirmPassword, setConfirmPassword] = useState('');
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [ConfirmPassword, setConfirmPassword] = useState("");
 
   const oldPasswordHandleChange = (event) => {
     setOldPassword(event.target.value);
@@ -54,14 +54,15 @@ export default function PasswordManage() {
   };
   return (
     <>
-      <Button
+      <EditIcon
+        color="blackAlpha.400"
+        h="5"
+        w="5"
         onClick={() => {
           setOverlay(<OverlayOne />);
           onOpen();
         }}
-      >
-        <EditIcon color="white" h="5" w="5" />
-      </Button>
+      />
       <Modal isCentered isOpen={isOpen} onClose={onClose}>
         {overlay}
         <ModalContent>
