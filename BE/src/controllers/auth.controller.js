@@ -1,24 +1,24 @@
-const userRepository = require("../repositories/user.repositories");
-const { compare, hash } = require("../lib/bcrypt");
-const { createToken } = require("../lib/jwt");
-const { passwordValidator } = require("../helpers");
+const userRepository = require('../repositories/user.repositories');
+const { compare, hash } = require('../lib/bcrypt');
+const { createToken } = require('../lib/jwt');
+const { passwordValidator } = require('../helpers');
 
 const register = async (req, res) => {
   try {
-    if (+req.user.role !== 1) throw { message: "Unauthorize", statusCode: 401 };
+    if (+req.user.role !== 1) throw { message: 'Unauthorize', statusCode: 401 };
     // get user by email and username
     const getUserByUsername = await userRepository.getUser(req.body.username);
     if (getUserByUsername)
-      throw { message: "username is already exist", statusCode: 409 };
+      throw { message: 'username is already exist', statusCode: 409 };
 
     const getUserByEmail = await userRepository.getUser(req.body.email);
     if (getUserByEmail)
-      throw { message: "email is already exist", statusCode: 409 };
+      throw { message: 'email is already exist', statusCode: 409 };
 
     const newUser = await userRepository.createUser(req.body);
-    if (!newUser) throw { message: "Register Failed", statusCode: 500 };
+    if (!newUser) throw { message: 'Register Failed', statusCode: 500 };
 
-    return res.status(201).send({ message: "Successfully Register" });
+    return res.status(201).send({ message: 'Successfully Register' });
   } catch (error) {
     return res.status(error.statusCode || 500).send({
       message: error.message || error,
@@ -32,11 +32,11 @@ const adminRegister = async (req, res) => {
   try {
     // check user superadmin
     const checkedUserRole = await userRepository.getUser(1);
-    if (checkedUserRole) throw { message: "Unauthorized", statusCode: 401 };
+    if (checkedUserRole) throw { message: 'Unauthorized', statusCode: 401 };
     const newUser = await userRepository.createUser({ ...req.body, role: 1 });
-    if (!newUser) throw { message: "Register Failed", statusCode: 500 };
+    if (!newUser) throw { message: 'Register Failed', statusCode: 500 };
 
-    return res.status(201).send({ message: "success register superadmin" });
+    return res.status(201).send({ message: 'success register superadmin' });
   } catch (error) {
     return res.status(error.statusCode || 500).send({
       message: error.message || error,
@@ -54,13 +54,13 @@ const login = async (req, res) => {
     const getUser = await userRepository.getUser(userData);
 
     if (!getUser) {
-      throw { message: "username atau password salah", statusCode: 500 };
+      throw { message: 'username atau password salah', statusCode: 500 };
     }
     // Check Password
     let checkPassword = compare(password, getUser.password);
     // console.log(getUser.password);
     if (!checkPassword) {
-      throw { message: "username atau password salah", statusCode: 500 };
+      throw { message: 'username atau password salah', statusCode: 500 };
     }
 
     const userdata = getUser.dataValues;
@@ -69,13 +69,14 @@ const login = async (req, res) => {
       fullname: userdata.fullname,
     });
     return res.status(200).send({
-      message: "Successfully logged in!",
+      message: 'Successfully logged in!',
       data: { accessToken: token },
     });
   } catch (error) {
     return res.status(500).send({ message: error.message || error });
   }
 };
+
 const changePassword = async (req, res) => {
   try {
     const { oldPassword, newPassword, ConfirmPassword, id } = req.body;
@@ -84,12 +85,12 @@ const changePassword = async (req, res) => {
     // console.log(dataUser.dataValues);
     const compareold = compare(oldPassword, dataUser.password);
     if (!compareold) {
-      res.send({ code: 400, message: "Password incorrect" });
+      res.send({ code: 400, message: 'Password incorrect' });
     }
     if (newPassword !== ConfirmPassword) {
       res.send({
         code: 400,
-        message: "Password doesnt match",
+        message: 'Password doesnt match',
         detail: `Password: ${newPassword}, Confirm Password: ${ConfirmPassword}`,
       });
     }
@@ -103,8 +104,8 @@ const changePassword = async (req, res) => {
     resdata = await userRepository.patchUser(passwordHash, dataUser);
 
     res.send({
-      status: "Success",
-      message: "Success updated password",
+      status: 'Success',
+      message: 'Success updated password',
       detail: { resdata },
     });
   } catch (error) {

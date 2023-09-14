@@ -1,29 +1,30 @@
-require("dotenv/config");
-const express = require("express");
+require('dotenv/config');
+const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 6969;
-const cors = require("cors");
-const bearerToken = require("express-bearer-token");
+const cors = require('cors');
+const bearerToken = require('express-bearer-token');
 
 //Config
 app.use(cors());
 app.use(bearerToken());
-app.use("/public", express.static("public"));
+app.use('/public', express.static('public'));
 app.use(express.json());
 
 //started
-app.get("/api", (req, res) => {
+app.get('/api', (req, res) => {
   res.send(`Hello, this is my API start yunan`);
 });
 
 // Routers
-const { authRouters } = require("./routers");
-app.use("/auth", authRouters);
+const { authRouters, userRouters } = require('./routers');
+app.use('/auth', authRouters);
+app.use('/user', userRouters);
 
 app.use((error, req, res, next) => {
   console.log({ error });
-  const errorObj = { status: "ERROR", message: error.message, detail: error };
-  const httpCode = typeof error.code == "number" ? error.code : 500;
+  const errorObj = { status: 'ERROR', message: error.message, detail: error };
+  const httpCode = typeof error.code == 'number' ? error.code : 500;
   res.status(httpCode).send(errorObj);
 });
 
