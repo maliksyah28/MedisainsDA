@@ -9,7 +9,6 @@ export const registerAdmin = async (data) => {
 };
 
 export const register = async ({ accessToken, ...data }) => {
-  console.log(accessToken);
   const config = {
     headers: { Authorization: `Bearer ${accessToken}` },
   };
