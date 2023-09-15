@@ -22,9 +22,9 @@ export default function Navbar({ user }) {
   };
 
   return (
-    <Flex direction="column" height="100vh" width="20vw" bg="twitter.300">
+    <Flex direction="column" height="100vh" width="20vw" bg="telegram.700">
       <Box mx="auto" w="70%">
-        <Image src="/LOGOMedsains.png" h="40" w="40" alt="icon" />
+        <Image src="/LOGOMedsains.png" alt="icon" />
       </Box>
       <Box
         h="10"
@@ -44,6 +44,7 @@ export default function Navbar({ user }) {
           h="10"
           cursor="pointer"
           p="2"
+          onClick={() => navigate("/account-management")}
           // bg={router.pathname.includes("inventory") ? "#005E9D" : "unset"}
         >
           <Flex justifyContent="center">
@@ -115,9 +116,10 @@ export default function Navbar({ user }) {
           marginLeft={"10"}
           _hover={{}}
           _active={{ color: "black" }}
+          onClick={onLogoutClick}
           // paddingInline={'10'}
         >
-          <FaSignOutAlt color="white" h="5" w="5" onClick={onLogoutClick} />
+          <FaSignOutAlt color="white" h="5" w="5" />
         </Button>
       </Flex>
       {/* </Box> */}
