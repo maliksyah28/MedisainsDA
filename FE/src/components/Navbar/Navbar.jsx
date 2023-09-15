@@ -1,11 +1,11 @@
-import { Box, Button, Flex, Icon, Image, Spacer, Text } from "@chakra-ui/react";
-import React, { useState } from "react";
-import { HamburgerIcon, EditIcon } from "@chakra-ui/icons";
-import { FaSignOutAlt } from "react-icons/fa";
-import PasswordManage from "../ChangePassword/ChangePassword";
-import { logout } from "../../auth/authSlice";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Box, Button, Flex, Icon, Image, Spacer, Text } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { HamburgerIcon, EditIcon } from '@chakra-ui/icons';
+import { FaSignOutAlt } from 'react-icons/fa';
+import PasswordManage from '../ChangePassword/ChangePassword';
+import { logout } from '../../auth/authSlice';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 export default function Navbar({ user }) {
   const dispatch = useDispatch();
@@ -16,9 +16,9 @@ export default function Navbar({ user }) {
   };
 
   const onLogoutClick = () => {
-    localStorage.removeItem("userInfo");
+    localStorage.removeItem('userInfo');
     dispatch(logout());
-    navigate("/login");
+    navigate('/login');
   };
 
   return (
@@ -95,7 +95,7 @@ export default function Navbar({ user }) {
       <Spacer />
 
       <Flex
-        direction={"row"}
+        direction={'row'}
         width="max-content"
         mx="auto"
         alignItems="center"
@@ -110,7 +110,7 @@ export default function Navbar({ user }) {
           color="white"
           mb="10"
           _hover={{}}
-          _active={{ color: "black" }}
+          _active={{ color: 'black' }}
           // paddingInline={'10'}
         >
           <FaSignOutAlt color="white" h="5" w="5" onClick={onLogoutClick} />
