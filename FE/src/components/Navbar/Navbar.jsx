@@ -35,23 +35,25 @@ export default function Navbar({ user }) {
         <Flex justifyContent="center">
           {/* <Image src="/transaksi.svg" alt="transaksi" /> */}
           <Text color="white" ms="2">
-            Transaksi
+            Profile
           </Text>
         </Flex>
       </Box>
-      <Box
-        h="10"
-        cursor="pointer"
-        p="2"
-        // bg={router.pathname.includes("inventory") ? "#005E9D" : "unset"}
-      >
-        <Flex justifyContent="center">
-          {/* <Image src="/inventory.svg" alt="inventory" /> */}
-          <Text color="white" ms="2">
-            Inventory
-          </Text>
-        </Flex>
-      </Box>
+      {user.role === 1 && (
+        <Box
+          h="10"
+          cursor="pointer"
+          p="2"
+          // bg={router.pathname.includes("inventory") ? "#005E9D" : "unset"}
+        >
+          <Flex justifyContent="center">
+            {/* <Image src="/inventory.svg" alt="inventory" /> */}
+            <Text color="white" ms="2">
+              Account Management
+            </Text>
+          </Flex>
+        </Box>
+      )}
       <Box
         h="10"
         cursor="pointer"
@@ -94,6 +96,7 @@ export default function Navbar({ user }) {
       </Box>
       <Spacer />
 
+      {/* <Box width={"full"}> */}
       <Flex
         direction={"row"}
         width="max-content"
@@ -109,6 +112,7 @@ export default function Navbar({ user }) {
           bgColor="twitter"
           color="white"
           mb="10"
+          marginLeft={"10"}
           _hover={{}}
           _active={{ color: "black" }}
           // paddingInline={'10'}
@@ -116,6 +120,7 @@ export default function Navbar({ user }) {
           <FaSignOutAlt color="white" h="5" w="5" onClick={onLogoutClick} />
         </Button>
       </Flex>
+      {/* </Box> */}
     </Flex>
   );
 }
