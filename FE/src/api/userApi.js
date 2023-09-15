@@ -23,3 +23,10 @@ export const getUserByToken = async (data) => {
   };
   return await axiosInstance.get("/user/user-token", config);
 };
+
+export const getAllUsers = async (data) => {
+  const config = {
+    headers: { Authorization: `Bearer ${data}` },
+  };
+  return await axiosInstance.get("/user/users", config);
+};
