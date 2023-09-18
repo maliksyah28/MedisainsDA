@@ -1,6 +1,6 @@
-const { passwordValidator } = require("../helpers");
-const userRepository = require("../repositories/user.repositories");
-const { compare, hash } = require("../lib/bcrypt");
+const { passwordValidator } = require('../helpers');
+const userRepository = require('../repositories/user.repositories');
+const { compare, hash } = require('../lib/bcrypt');
 
 const changePassword = async (req, res) => {
   try {
@@ -9,12 +9,12 @@ const changePassword = async (req, res) => {
     const dataUser = await userRepository.getUserById(id);
     const compareold = compare(oldPassword, dataUser.password);
     if (!compareold) {
-      res.send({ code: 400, message: "Password incorrect" });
+      res.send({ code: 400, message: 'Password incorrect' });
     }
     if (newPassword !== ConfirmPassword) {
       res.send({
         code: 400,
-        message: "Password doesnt match",
+        message: 'Password doesnt match',
         detail: `Password: ${newPassword}, Confirm Password: ${ConfirmPassword}`,
       });
     }
@@ -28,8 +28,8 @@ const changePassword = async (req, res) => {
     const resdata = await userRepository.patchUser(passwordHash, dataUser);
 
     res.send({
-      status: "Success",
-      message: "Success updated password",
+      status: 'Success',
+      message: 'Success updated password',
       detail: { resdata },
     });
   } catch (error) {
@@ -42,12 +42,12 @@ const getUserByToken = async (req, res) => {
     const id = req.user.id;
     const data = await userRepository.getUserById(id);
     res.send({
-      status: "Success",
-      message: "Success get user",
+      status: 'Success',
+      message: 'Success get user',
       data,
     });
   } catch (error) {
-    res.status(500).send({ message: "something wrong" });
+    res.status(500).send({ message: 'something wrong' });
   }
 };
 

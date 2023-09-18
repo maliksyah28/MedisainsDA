@@ -1,5 +1,5 @@
-const { verifyToken } = require("../lib/jwt");
-const { Account } = require("../../models");
+const { verifyToken } = require('../lib/jwt');
+const { Account } = require('../../models');
 
 const auth = async (req, res, next) => {
   try {
@@ -11,7 +11,7 @@ const auth = async (req, res, next) => {
       },
     });
 
-    if (!responsGetUser) throw { message: "user not found" };
+    if (!responsGetUser) throw { message: 'user not found' };
 
     req.user = responsGetUser.dataValues;
     next();
