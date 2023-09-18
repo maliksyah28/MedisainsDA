@@ -8,8 +8,11 @@ export const registerAdmin = async (data) => {
   return await axiosInstance.post("/auth/admin-register", data);
 };
 
-export const register = async (data) => {
-  return await axiosInstance.post("/auth/register", data);
+export const register = async ({ accessToken, ...data }) => {
+  const config = {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  };
+  return await axiosInstance.post("/auth/register", data, config);
 };
 
 export const changePass = async (data) => {

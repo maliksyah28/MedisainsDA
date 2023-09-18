@@ -116,9 +116,10 @@ export default function Navbar({ user }) {
           marginLeft={"10"}
           _hover={{}}
           _active={{ color: "black" }}
+          onClick={onLogoutClick}
           // paddingInline={'10'}
         >
-          <FaSignOutAlt color="white" h="5" w="5" onClick={onLogoutClick} />
+          <FaSignOutAlt color="white" h="5" w="5" />
         </Button>
       </Flex>
       {/* </Box> */}

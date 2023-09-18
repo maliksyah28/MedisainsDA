@@ -27,7 +27,7 @@ const roles = {
   3: "purchasing",
 };
 
-function AccountManagementContent({ data }) {
+function AccountManagementContent({ data, addNewUserMutation, accessToken }) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -45,8 +45,10 @@ function AccountManagementContent({ data }) {
           <Td>{data.email}</Td>
           <Td>{roles[data.role]}</Td>
           <Td textAlign={"center"}>
-            <Button>Edit</Button>
-            <Button marginLeft={6}>Delete</Button>
+            <Button colorScheme="green">Edit</Button>
+            <Button colorScheme="red" marginLeft={6}>
+              Delete
+            </Button>
           </Td>
         </Tr>
       );
@@ -103,7 +105,12 @@ function AccountManagementContent({ data }) {
           </TableContainer>
         </Box>
       </Content>
-      <AccountManagementModal isOpen={isOpen} onClose={onClose} />
+      <AccountManagementModal
+        isOpen={isOpen}
+        onClose={onClose}
+        addNewUserMutation={addNewUserMutation}
+        accessToken={accessToken}
+      />
     </>
   );
 }
