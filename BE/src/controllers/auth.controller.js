@@ -22,7 +22,7 @@ const register = async (req, res) => {
   } catch (error) {
     return res.status(error.statusCode || 500).send({
       message: error.message || error,
-      statusCode: error.statusCode,
+      statusCode: error.statusCode
     });
   }
 };
@@ -40,7 +40,7 @@ const adminRegister = async (req, res) => {
   } catch (error) {
     return res.status(error.statusCode || 500).send({
       message: error.message || error,
-      statusCode: error.statusCode,
+      statusCode: error.statusCode
     });
   }
 };
@@ -50,6 +50,8 @@ const login = async (req, res) => {
   try {
     // get User
     const { userData, password } = req.body;
+
+    console.log(req.body);
 
     const getUser = await userRepository.getUser(userData);
 
@@ -66,11 +68,11 @@ const login = async (req, res) => {
     const userdata = getUser.dataValues;
     const token = createToken({
       id: userdata.id,
-      fullname: userdata.fullname,
+      fullname: userdata.fullname
     });
     return res.status(200).send({
       message: "Successfully logged in!",
-      data: { accessToken: token },
+      data: { accessToken: token }
     });
   } catch (error) {
     return res.status(500).send({ message: error.message || error });
@@ -91,14 +93,14 @@ const changePassword = async (req, res) => {
       res.send({
         code: 400,
         message: "Password doesnt match",
-        detail: `Password: ${newPassword}, Confirm Password: ${ConfirmPassword}`,
+        detail: `Password: ${newPassword}, Confirm Password: ${ConfirmPassword}`
       });
     }
     const validatePassword = passwordValidator(newPassword);
     if (validatePassword)
       throw {
         code: 400,
-        message: validatePassword,
+        message: validatePassword
       };
     const passwordHash = hash(newPassword);
     resdata = await userRepository.patchUser(passwordHash, dataUser);
@@ -106,7 +108,7 @@ const changePassword = async (req, res) => {
     res.send({
       status: "Success",
       message: "Success updated password",
-      detail: { resdata },
+      detail: { resdata }
     });
   } catch (error) {
     return res.status(500).send({ message: error.message || error });
@@ -116,5 +118,5 @@ module.exports = {
   register,
   login,
   changePassword,
-  adminRegister,
+  adminRegister
 };

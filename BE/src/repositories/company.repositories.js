@@ -9,14 +9,14 @@ class CompanyRepository {
           {
             model: Account,
             as: "creators",
-            attributes: ["fullname", "username"],
+            attributes: ["fullname", "username"]
           },
           {
             model: Account,
             as: "salesPICs",
-            attributes: ["fullname", "username"],
-          },
-        ],
+            attributes: ["fullname", "username"]
+          }
+        ]
       });
     } catch (error) {
       throw error;
@@ -25,31 +25,47 @@ class CompanyRepository {
 
   async getCompany(data) {
     try {
-      return await Company.findOne(
-        {
-          include: [
-            {
-              model: Account,
-              as: "creators",
-              attributes: ["fullname", "username"],
-            },
-            {
-              model: Account,
-              as: "salesPICs",
-              attributes: ["fullname", "username"],
-            },
-          ],
+      return await Company.findOne({
+        where: {
+          [Op.or]: [{ id: data }, { companyName: data }]
         },
-        {
-          where: {
-            [Op.or]: [{ id: data }, { companyName: data }],
+        include: [
+          {
+            model: Account,
+            as: "creators",
+            attributes: ["fullname", "username"]
           },
-        }
-      );
+          {
+            model: Account,
+            as: "salesPICs",
+            attributes: ["fullname", "username"]
+          }
+        ]
+      });
     } catch (error) {
       throw error;
     }
   }
+
+  // async getCompanyByName(data) {
+  //   try {
+  //     return await Company.findOne({
+  //       where: { companyName: data },
+  //       include: [
+  //         {
+  //           model: Account,
+  //           as: "creators",
+  //           attributes: ["fullname", "username"]
+  //         },
+  //         {
+  //           model: Account,
+  //           as: "salesPICs",
+  //           attributes: ["fullname", "username"]
+  //         }
+  //       ]
+  //     });
+  //   } catch (error) {}
+  // }
 
   async createCompany(companyData) {
     try {

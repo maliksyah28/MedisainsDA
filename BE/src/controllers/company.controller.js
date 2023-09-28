@@ -29,13 +29,14 @@ const createCompany = async (req, res) => {
     const getCompanyByName = await companyRepositories.getCompany(
       req.body.companyName
     );
+    console.log(getCompanyByName);
     if (getCompanyByName) {
       throw { message: "Company name already exist", statusCode: 400 };
     }
     const creator = req.user.id;
     const newCompany = await companyRepositories.createCompany({
       ...req.body,
-      creator,
+      creator
     });
 
     if (!newCompany)
@@ -44,7 +45,7 @@ const createCompany = async (req, res) => {
   } catch (error) {
     return res.status(error.statusCode || 500).send({
       message: error.message || error,
-      statusCode: error.statusCode,
+      statusCode: error.statusCode
     });
   }
 };
@@ -77,7 +78,7 @@ const updateCompany = async (req, res) => {
   } catch (error) {
     return res.status(error.statusCode || 500).send({
       message: error.message || error,
-      statusCode: error.statusCode,
+      statusCode: error.statusCode
     });
   }
 };
@@ -86,5 +87,5 @@ module.exports = {
   getAllCompany,
   getCompanyDetail,
   createCompany,
-  updateCompany,
+  updateCompany
 };

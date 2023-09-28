@@ -1,27 +1,26 @@
 import React from "react";
 import Navbar from "../components/Navbar/Navbar";
 import { Flex, useToast } from "@chakra-ui/react";
+import CompanyList from "../components/Company/CompanyList";
 import { useSelector } from "react-redux";
-import AccountManagementContent from "../components/AccountManagementContent/AccountManagementContent";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { getAllUsers, register } from "../api/userApi";
+import { createCompany, getAllCompanies } from "../api/companyApi";
 
-export default function AccountManagement() {
+function Company() {
   const toast = useToast();
   const queryClient = useQueryClient();
-  const user = useSelector((state) => state.auth);
   const userInfo = localStorage.getItem("userInfo");
   const accessToken = JSON.parse(userInfo).accessToken;
-  const { data, isLoading, isError, error } = useQuery("users", () =>
-    getAllUsers(accessToken)
+  const user = useSelector((state) => state.auth);
+  const { data, isLoading, isError, error } = useQuery("company", () =>
+    getAllCompanies(accessToken)
   );
-
-  const addNewUserMutation = useMutation(register, {
+  const addNewCompanyMutation = useMutation(createCompany, {
     onSuccess: (data) => {
-      queryClient.invalidateQueries("users");
+      queryClient.invalidateQueries("company");
       toast({
         position: "top",
-        title: "Account created.",
+        title: "Company Created",
         description: data.data.message,
         status: "success",
         duration: 2000,
@@ -39,16 +38,16 @@ export default function AccountManagement() {
       });
     }
   });
-
-  if (isLoading) return <div>Loading..............</div>;
   return (
     <Flex justifyContent="center">
       <Navbar user={user} />
-      <AccountManagementContent
-        data={data}
-        addNewUserMutation={addNewUserMutation}
+      <CompanyList
         accessToken={accessToken}
+        data={data}
+        addNewCompanyMutation={addNewCompanyMutation}
       />
     </Flex>
   );
 }
+
+export default Company;
