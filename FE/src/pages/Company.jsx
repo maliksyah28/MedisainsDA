@@ -4,7 +4,11 @@ import { Flex, useToast } from "@chakra-ui/react";
 import CompanyList from "../components/Company/CompanyList";
 import { useSelector } from "react-redux";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { createCompany, getAllCompanies } from "../api/companyApi";
+import {
+  createCompany,
+  getAllCompanies,
+  updateCompany
+} from "../api/companyApi";
 
 function Company() {
   const toast = useToast();
@@ -38,6 +42,30 @@ function Company() {
       });
     }
   });
+
+  const updateCompanyMutation = useMutation(updateCompany, {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries("company");
+      toast({
+        position: "top",
+        title: "Company Created",
+        description: data.data.message,
+        status: "success",
+        duration: 2000,
+        isClosable: true
+      });
+    },
+    onError: (data) => {
+      toast({
+        position: "top",
+        title: `Error ${data.response.data.statusCode}`,
+        description: data.response.data.message,
+        status: "error",
+        duration: 2000,
+        isClosable: true
+      });
+    }
+  });
   return (
     <Flex justifyContent="center">
       <Navbar user={user} />
@@ -45,6 +73,7 @@ function Company() {
         accessToken={accessToken}
         data={data}
         addNewCompanyMutation={addNewCompanyMutation}
+        updateCompanyMutation={updateCompanyMutation}
       />
     </Flex>
   );

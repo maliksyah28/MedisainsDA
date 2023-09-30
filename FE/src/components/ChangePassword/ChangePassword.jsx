@@ -13,7 +13,7 @@ import {
   Button,
   FormControl,
   FormLabel,
-  Input,
+  Input
 } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
 export default function PasswordManage() {
@@ -46,7 +46,7 @@ export default function PasswordManage() {
       const body = {
         oldPassword: oldPassword,
         newPassword: newPassword,
-        ConfirmPassword: ConfirmPassword,
+        ConfirmPassword: ConfirmPassword
       };
     } catch (error) {
       console.log(error);

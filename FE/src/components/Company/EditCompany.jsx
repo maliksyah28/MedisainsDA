@@ -18,23 +18,19 @@ import {
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
-export default function CreateCompany({
+export default function EditCompany({
   isOpen,
   onClose,
-  addNewCompanyMutation,
-  accessToken
+  updateCompanyMutation,
+  accessToken,
+  data
 }) {
-  const [showPassword, setShowPassword] = useState(false);
-  const [formError, setFormError] = useState(false);
   const [companyData, setCompanyData] = useState({
-    companyName: "",
-    phoneNumber: "",
-    address: "",
-    description: ""
+    ...data
   });
 
-  const onAddNewCompany = () => {
-    addNewCompanyMutation.mutate({ ...companyData, accessToken });
+  const onUpdateCompany = () => {
+    updateCompanyMutation.mutate({ ...companyData, id: data.id, accessToken });
     setCompanyData({
       companyName: "",
       phoneNumber: "",
@@ -113,7 +109,7 @@ export default function CreateCompany({
           <Button colorScheme="gray" mr={3} onClick={onClose}>
             Close
           </Button>
-          <Button colorScheme="telegram" onClick={onAddNewCompany}>
+          <Button colorScheme="telegram" onClick={onUpdateCompany}>
             Create
           </Button>
         </ModalFooter>

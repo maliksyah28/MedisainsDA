@@ -20,3 +20,10 @@ export const getCompany = async ({ accessToken, data }) => {
   };
   return await axiosInstance.get("/company/" + data, config);
 };
+
+export const updateCompany = async ({ accessToken, id, ...data }) => {
+  const config = {
+    headers: { Authorization: `Bearer ${accessToken}` }
+  };
+  return await axiosInstance.patch("/company/" + id, data, config);
+};

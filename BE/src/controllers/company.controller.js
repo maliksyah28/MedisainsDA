@@ -29,7 +29,6 @@ const createCompany = async (req, res) => {
     const getCompanyByName = await companyRepositories.getCompany(
       req.body.companyName
     );
-    console.log(getCompanyByName);
     if (getCompanyByName) {
       throw { message: "Company name already exist", statusCode: 400 };
     }

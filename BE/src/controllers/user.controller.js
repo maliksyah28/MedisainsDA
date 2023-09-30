@@ -15,14 +15,14 @@ const changePassword = async (req, res) => {
       res.send({
         code: 400,
         message: "Password doesnt match",
-        detail: `Password: ${newPassword}, Confirm Password: ${ConfirmPassword}`,
+        detail: `Password: ${newPassword}, Confirm Password: ${ConfirmPassword}`
       });
     }
     const validatePassword = passwordValidator(newPassword);
     if (validatePassword)
       throw {
         code: 400,
-        message: validatePassword,
+        message: validatePassword
       };
     const passwordHash = hash(newPassword);
     const resdata = await userRepository.patchUser(passwordHash, dataUser);
@@ -30,7 +30,7 @@ const changePassword = async (req, res) => {
     res.send({
       status: "Success",
       message: "Success updated password",
-      detail: { resdata },
+      detail: { resdata }
     });
   } catch (error) {
     return res.status(500).send({ message: error.message || error });
@@ -44,7 +44,7 @@ const getUserByToken = async (req, res) => {
     res.send({
       status: "Success",
       message: "Success get user",
-      data,
+      data
     });
   } catch (error) {
     res.status(500).send({ message: "something wrong" });
@@ -53,13 +53,13 @@ const getUserByToken = async (req, res) => {
 
 const getAllUser = async (req, res) => {
   try {
-    if (req.user.role !== 1)
+    if (+req.user.role !== 1 && +req.user.role !== 2)
       return res.status(401).send({ message: "Unauthorize" });
     const data = await userRepository.getAllUsers();
     res.send({
       status: "Success",
       message: "Success get all users",
-      data,
+      data
     });
   } catch (error) {
     res.status(500).send({ message: "something wrong" });
@@ -69,5 +69,5 @@ const getAllUser = async (req, res) => {
 module.exports = {
   changePassword,
   getUserByToken,
-  getAllUser,
+  getAllUser
 };

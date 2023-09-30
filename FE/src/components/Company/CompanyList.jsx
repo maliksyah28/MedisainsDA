@@ -17,33 +17,25 @@ import {
 import Content from "../Content";
 import CreateCompany from "./CreateCompany";
 import { Link } from "react-router-dom";
+import CompanyCard from "./CompanyCard";
 
 export default function CompanyList({
   accessToken,
   addNewCompanyMutation,
-  data
+  data,
+  updateCompanyMutation
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  console.log(data);
+
   const RenderData = () => {
-    return data?.data?.data.map((data) => {
+    return data?.data?.data?.map((data) => {
       return (
-        <Tr key={data.id}>
-          <Td>
-            <Link to={`/company/${data.companyName}`}>
-              <ChakraLink>{data.companyName}</ChakraLink>
-            </Link>
-          </Td>
-          <Td>{data.phoneNumber}</Td>
-          <Td>{data.creators?.username}</Td>
-          <Td>{data.salesPICs?.username}</Td>
-          <Td textAlign={"center"}>
-            <Button colorScheme="green">Edit</Button>
-            <Button colorScheme="red" marginLeft={6}>
-              Delete
-            </Button>
-          </Td>
-        </Tr>
+        <CompanyCard
+          key={data.id}
+          data={data}
+          updateCompanyMutation={updateCompanyMutation}
+          accessToken={accessToken}
+        />
       );
     });
   };

@@ -14,7 +14,7 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Select,
+  Select
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
@@ -22,7 +22,7 @@ export default function AccountManagementModal({
   isOpen,
   onClose,
   addNewUserMutation,
-  accessToken,
+  accessToken
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const [formError, setFormError] = useState(false);
@@ -31,7 +31,7 @@ export default function AccountManagementModal({
     fullname: "",
     email: "",
     password: "",
-    role: null,
+    role: null
   });
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -42,7 +42,7 @@ export default function AccountManagementModal({
       fullname: "",
       email: "",
       password: "",
-      role: null,
+      role: null
     });
     setConfirmPassword("");
     onClose();
@@ -71,7 +71,7 @@ export default function AccountManagementModal({
               onChange={(e) =>
                 setUserRegister({
                   ...userRegister,
-                  [e.target.name]: e.target.value,
+                  [e.target.name]: e.target.value
                 })
               }
             />
@@ -85,7 +85,7 @@ export default function AccountManagementModal({
               onChange={(e) =>
                 setUserRegister({
                   ...userRegister,
-                  [e.target.name]: e.target.value,
+                  [e.target.name]: e.target.value
                 })
               }
             />
@@ -99,7 +99,7 @@ export default function AccountManagementModal({
               onChange={(e) =>
                 setUserRegister({
                   ...userRegister,
-                  [e.target.name]: e.target.value,
+                  [e.target.name]: e.target.value
                 })
               }
             />
@@ -112,7 +112,7 @@ export default function AccountManagementModal({
               onChange={(e) =>
                 setUserRegister({
                   ...userRegister,
-                  [e.target.name]: e.target.value,
+                  [e.target.name]: e.target.value
                 })
               }
             >
@@ -131,7 +131,7 @@ export default function AccountManagementModal({
                 onChange={(e) =>
                   setUserRegister({
                     ...userRegister,
-                    [e.target.name]: e.target.value,
+                    [e.target.name]: e.target.value
                   })
                 }
               />
@@ -177,7 +177,7 @@ export default function AccountManagementModal({
             Close
           </Button>
           <Button colorScheme="telegram" onClick={onAddNewUser}>
-            Add User
+            Create
           </Button>
         </ModalFooter>
       </ModalContent>
