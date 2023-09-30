@@ -59,6 +59,20 @@ export default function Navbar({ user }) {
         h="10"
         cursor="pointer"
         p="2"
+        onClick={() => navigate("/company")}
+        // bg={router.pathname.includes("inventory") ? "#005E9D" : "unset"}
+      >
+        <Flex justifyContent="center">
+          {/* <Image src="/inventory.svg" alt="inventory" /> */}
+          <Text color="white" ms="2">
+            List Company
+          </Text>
+        </Flex>
+      </Box>
+      <Box
+        h="10"
+        cursor="pointer"
+        p="2"
         // bg={router.pathname.includes("Laporan") ? "#005E9D" : "unset"}
       >
         <Flex justifyContent="center">

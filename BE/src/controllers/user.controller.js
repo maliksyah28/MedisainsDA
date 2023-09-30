@@ -53,16 +53,16 @@ const getUserByToken = async (req, res) => {
 
 const getAllUser = async (req, res) => {
   try {
-    if (req.user.role !== 1)
-      return res.status(401).send({ message: "Unauthorize" });
+    if (+req.user.role !== 1 && +req.user.role !== 2)
+      return res.status(401).send({ message: 'Unauthorize' });
     const data = await userRepository.getAllUsers();
     res.send({
-      status: "Success",
-      message: "Success get all users",
+      status: 'Success',
+      message: 'Success get all users',
       data,
     });
   } catch (error) {
-    res.status(500).send({ message: "something wrong" });
+    res.status(500).send({ message: 'something wrong' });
   }
 };
 

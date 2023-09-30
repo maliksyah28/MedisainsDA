@@ -2,7 +2,6 @@ const userRepository = require('../repositories/user.repositories');
 const { compare, hash } = require('../lib/bcrypt');
 const { createToken } = require('../lib/jwt');
 
-
 const register = async (req, res) => {
   try {
     if (+req.user.role !== 1) throw { message: 'Unauthorize', statusCode: 401 };
@@ -51,6 +50,8 @@ const login = async (req, res) => {
     // get User
     const { userData, password } = req.body;
 
+    console.log(req.body);
+
     const getUser = await userRepository.getUser(userData);
 
     if (!getUser) {
@@ -77,10 +78,9 @@ const login = async (req, res) => {
   }
 };
 
-
 module.exports = {
   register,
   login,
-  
+
   adminRegister,
 };
