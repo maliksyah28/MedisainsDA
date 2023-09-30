@@ -13,13 +13,14 @@ app.use(express.json());
 
 //started
 app.get('/api', (req, res) => {
-  res.send(`Hello, this is my API start yunan`);
+  res.send(`Hello, this is my API start`);
 });
 
 // Routers
-const { authRouters, userRouters } = require('./routers');
+const { authRouters, userRouters, contactRouters } = require('./routers');
 app.use('/auth', authRouters);
 app.use('/user', userRouters);
+app.use('/Contact', contactRouters);
 
 app.use((error, req, res, next) => {
   console.log({ error });
