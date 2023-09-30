@@ -17,7 +17,7 @@ export default function AccountManagement() {
   );
 
   const addNewUserMutation = useMutation(register, {
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries("users");
       toast({
         position: "top",
@@ -25,7 +25,7 @@ export default function AccountManagement() {
         description: data.data.message,
         status: "success",
         duration: 2000,
-        isClosable: true,
+        isClosable: true
       });
     },
     onError: (data) => {
@@ -35,9 +35,9 @@ export default function AccountManagement() {
         description: data.response.data.message,
         status: "error",
         duration: 2000,
-        isClosable: true,
+        isClosable: true
       });
-    },
+    }
   });
 
   if (isLoading) return <div>Loading..............</div>;
