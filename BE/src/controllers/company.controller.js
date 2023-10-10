@@ -1,9 +1,32 @@
+const { Op } = require("sequelize");
 const companyRepositories = require("../repositories/company.repositories");
 
 const getAllCompany = async (req, res) => {
   try {
-    const resGetCompany = await companyRepositories.getCompanies();
-    return res.status(200).send({ message: "kambing", data: resGetCompany });
+    const {
+      page = 1,
+      pageSize = 12,
+      order = "DESC",
+      orderBy = "createdAt",
+      companyName
+    } = req.query;
+    let search = {};
+    if (companyName) {
+      search = { companyName: { [Op.substring]: companyName } };
+    }
+    const limit = Number(pageSize);
+    const offset = (Number(page) - 1) * Number(pageSize);
+    const { count, rows } = await companyRepositories.getCompanies({
+      search,
+      limit,
+      offset,
+      order,
+      orderBy
+    });
+
+    return res
+      .status(200)
+      .send({ message: "kambing", data: rows, totalPages: count });
   } catch (error) {
     return res.status(500).send({ message: error });
   }

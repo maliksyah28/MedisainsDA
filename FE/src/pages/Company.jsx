@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import { Flex, useToast } from "@chakra-ui/react";
 import CompanyList from "../components/Company/CompanyList";
+import { useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import {
@@ -13,11 +14,21 @@ import {
 function Company() {
   const toast = useToast();
   const queryClient = useQueryClient();
+  let [searchParams, setSearchParams] = useSearchParams();
+  const [companyQuery, setCompanyQuery] = useState({
+    companyName: "",
+    page: searchParams.get("page") || 1,
+    pageSize: 5,
+    orderBy: "createdAt",
+    order: "DESC"
+  });
   const userInfo = localStorage.getItem("userInfo");
   const accessToken = JSON.parse(userInfo).accessToken;
   const user = useSelector((state) => state.auth);
-  const { data, isLoading, isError, error } = useQuery("company", () =>
-    getAllCompanies(accessToken)
+
+  const { data, isLoading, isError, error } = useQuery(
+    ["company", companyQuery],
+    getAllCompanies
   );
   const addNewCompanyMutation = useMutation(createCompany, {
     onSuccess: (data) => {
@@ -74,6 +85,8 @@ function Company() {
         data={data}
         addNewCompanyMutation={addNewCompanyMutation}
         updateCompanyMutation={updateCompanyMutation}
+        setCompanyQuery={setCompanyQuery}
+        companyQuery={companyQuery}
       />
     </Flex>
   );

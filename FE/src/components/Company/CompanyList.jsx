@@ -10,22 +10,39 @@ import {
   Th,
   Thead,
   Tr,
-  Td,
   useDisclosure,
-  Link as ChakraLink
+  Input,
+  InputGroup,
+  InputRightElement
 } from "@chakra-ui/react";
+import { SearchIcon } from "@chakra-ui/icons";
 import Content from "../Content";
 import CreateCompany from "./CreateCompany";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import CompanyCard from "./CompanyCard";
-
+import { useState } from "react";
+import ReactPaginate from "react-paginate";
+import styles from "./company.module.css";
 export default function CompanyList({
   accessToken,
   addNewCompanyMutation,
   data,
-  updateCompanyMutation
+  updateCompanyMutation,
+  setCompanyQuery,
+  companyQuery
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [search, setSearch] = useState();
+  let [searchParams, setSearchParams] = useSearchParams();
+
+  const handlePageClick = (e) => {
+    setCompanyQuery({ ...companyQuery, ["page"]: e.selected + 1 });
+    setSearchParams({ page: e.selected + 1 });
+  };
+
+  const onSearchHandler = () => {
+    setCompanyQuery({ ...companyQuery, ["companyName"]: search });
+  };
 
   const RenderData = () => {
     return data?.data?.data?.map((data) => {
@@ -55,9 +72,33 @@ export default function CompanyList({
           marginTop={4}
           marginRight={8}
         >
-          <Button colorScheme="telegram" width={"max-content"} onClick={onOpen}>
-            Add New Company
-          </Button>
+          <Flex width={"100%"} justifyContent={"space-between"}>
+            <InputGroup size="md" width={"20%"} marginLeft={8}>
+              <Input
+                pr="4.5rem"
+                type={"text"}
+                placeholder="Search"
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <InputRightElement rounded={8}>
+                <Button
+                  variant={"unstyle"}
+                  bgColor={"transparent"}
+                  rounded={8}
+                  onClick={onSearchHandler}
+                >
+                  <SearchIcon />
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+            <Button
+              colorScheme="telegram"
+              width={"max-content"}
+              onClick={onOpen}
+            >
+              Add New Company
+            </Button>
+          </Flex>
         </Flex>
         <TableContainer
           justifyContent={"center"}
@@ -88,6 +129,22 @@ export default function CompanyList({
         onClose={onClose}
         addNewCompanyMutation={addNewCompanyMutation}
         accessToken={accessToken}
+      />
+      <ReactPaginate
+        forcePage={companyQuery.page - 1}
+        breakLabel="..."
+        nextLabel="next >"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={2}
+        pageCount={Math.ceil(data?.data?.totalPages / 5)}
+        previousLabel="< previous"
+        renderOnZeroPageCount={null}
+        containerClassName={styles.pagination}
+        pageLinkClassName={styles.pagenum}
+        previousLinkClassName={styles.pagenum}
+        nextLinkClassName={styles.pagenum}
+        activeLinkClassName={styles.active}
+        disabledClassName={styles.disabled}
       />
     </Content>
   );

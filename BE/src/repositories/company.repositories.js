@@ -1,10 +1,12 @@
 const { Company, Account } = require("../../models");
-const { Op } = require("sequelize");
+const { Op, Sequelize } = require("sequelize");
 
 class CompanyRepository {
-  async getCompanies() {
+  async getCompanies({ search, limit, offset, orderBy, order }) {
     try {
-      return await Company.findAll({
+      const { count, rows } = await Company.findAndCountAll({
+        order: Sequelize.literal(`${orderBy} ${order}`),
+        where: { ...search },
         include: [
           {
             model: Account,
@@ -16,8 +18,12 @@ class CompanyRepository {
             as: "salesPICs",
             attributes: ["fullname", "username"]
           }
-        ]
+        ],
+        offset,
+        limit
       });
+
+      return { count, rows };
     } catch (error) {
       throw error;
     }

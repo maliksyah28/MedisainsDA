@@ -22,7 +22,15 @@ export default function Navbar({ user }) {
   };
 
   return (
-    <Flex direction="column" height="100vh" width="20vw" bg="telegram.700">
+    <Flex
+      direction="column"
+      height="100vh"
+      width="20vw"
+      bg="telegram.700"
+      position={"sticky"}
+      left={0}
+      top={0}
+    >
       <Box mx="auto" w="70%">
         <Image src="/LOGOMedsains.png" alt="icon" />
       </Box>
