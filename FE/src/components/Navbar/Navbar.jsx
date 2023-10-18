@@ -44,7 +44,7 @@ export default function Navbar({ user }) {
           h="10"
           cursor="pointer"
           p="2"
-          onClick={() => navigate("/account-management")}
+          onClick={() => navigate('/account-management')}
           // bg={router.pathname.includes("inventory") ? "#005E9D" : "unset"}
         >
           <Flex justifyContent="center">
@@ -59,13 +59,20 @@ export default function Navbar({ user }) {
         h="10"
         cursor="pointer"
         p="2"
-        onClick={() => navigate("/company")}
+        onClick={() => navigate('/company')}
         // bg={router.pathname.includes("inventory") ? "#005E9D" : "unset"}
       >
         <Flex justifyContent="center">
           {/* <Image src="/inventory.svg" alt="inventory" /> */}
           <Text color="white" ms="2">
             List Company
+          </Text>
+        </Flex>
+      </Box>
+      <Box h="10" cursor="pointer" p="2" onClick={() => navigate('/Contact')}>
+        <Flex justifyContent="center">
+          <Text color="white" ms="2">
+            Contact
           </Text>
         </Flex>
       </Box>
@@ -127,9 +134,9 @@ export default function Navbar({ user }) {
           bgColor="twitter"
           color="white"
           mb="10"
-          marginLeft={"10"}
+          marginLeft={'10'}
           _hover={{}}
-          _active={{ color: "black" }}
+          _active={{ color: 'black' }}
           onClick={onLogoutClick}
           // paddingInline={'10'}
         >

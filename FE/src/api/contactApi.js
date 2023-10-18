@@ -1,8 +1,15 @@
 import axiosInstance from '../../services/axios';
 
-export const createContact = async (data) => {
+export const createContact = async ({ accessToken, ...data }) => {
   const config = {
-    headers: { Authorization: `Bearer ${data.token}` },
+    headers: { Authorization: `Bearer ${accessToken}` },
   };
-  return await axiosInstance.patch('/contact/new-Contact', data, config);
+  return await axiosInstance.post('/contact/new-Contact', data, config);
+};
+
+export const getAllContact = async (data) => {
+  const config = {
+    headers: { Authorization: `Bearer ${data}` },
+  };
+  return await axiosInstance.get('/contact/allContact', config);
 };
