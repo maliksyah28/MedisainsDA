@@ -36,7 +36,14 @@ class ContactRepository {
       throw error;
     }
   }
-
+  async updateContact(data, id) {
+    try {
+      const res = await Contact.update({ ...data }, { where: { id } });
+      return await res;
+    } catch (error) {
+      return error.errors[0].message;
+    }
+  }
   // Add other CRUD operations as needed
 }
 
