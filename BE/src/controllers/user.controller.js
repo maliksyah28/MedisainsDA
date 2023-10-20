@@ -1,6 +1,6 @@
-const { passwordValidator } = require("../helpers");
-const userRepository = require("../repositories/user.repositories");
-const { compare, hash } = require("../lib/bcrypt");
+const { passwordValidator } = require('../helpers');
+const userRepository = require('../repositories/user.repositories');
+const { compare, hash } = require('../lib/bcrypt');
 
 const changePassword = async (req, res) => {
   try {
@@ -9,28 +9,28 @@ const changePassword = async (req, res) => {
     const dataUser = await userRepository.getUserById(id);
     const compareold = compare(oldPassword, dataUser.password);
     if (!compareold) {
-      res.send({ code: 400, message: "Password incorrect" });
+      res.send({ code: 400, message: 'Password incorrect' });
     }
     if (newPassword !== ConfirmPassword) {
       res.send({
         code: 400,
-        message: "Password doesnt match",
-        detail: `Password: ${newPassword}, Confirm Password: ${ConfirmPassword}`
+        message: 'Password doesnt match',
+        detail: `Password: ${newPassword}, Confirm Password: ${ConfirmPassword}`,
       });
     }
     const validatePassword = passwordValidator(newPassword);
     if (validatePassword)
       throw {
         code: 400,
-        message: validatePassword
+        message: validatePassword,
       };
     const passwordHash = hash(newPassword);
     const resdata = await userRepository.patchUser(passwordHash, dataUser);
 
     res.send({
-      status: "Success",
-      message: "Success updated password",
-      detail: { resdata }
+      status: 'Success',
+      message: 'Success updated password',
+      detail: { resdata },
     });
   } catch (error) {
     return res.status(500).send({ message: error.message || error });
@@ -42,32 +42,32 @@ const getUserByToken = async (req, res) => {
     const id = req.user.id;
     const data = await userRepository.getUserById(id);
     res.send({
-      status: "Success",
-      message: "Success get user",
-      data
+      status: 'Success',
+      message: 'Success get user',
+      data,
     });
   } catch (error) {
-    res.status(500).send({ message: "something wrong" });
+    res.status(500).send({ message: 'something wrong' });
   }
 };
 
 const getAllUser = async (req, res) => {
   try {
     if (+req.user.role !== 1 && +req.user.role !== 2)
-      return res.status(401).send({ message: "Unauthorize" });
+      return res.status(401).send({ message: 'Unauthorize' });
     const data = await userRepository.getAllUsers();
     res.send({
-      status: "Success",
-      message: "Success get all users",
-      data
+      status: 'Success',
+      message: 'Success get all users',
+      data,
     });
   } catch (error) {
-    res.status(500).send({ message: "something wrong" });
+    res.status(500).send({ message: 'something wrong' });
   }
 };
 
 module.exports = {
   changePassword,
   getUserByToken,
-  getAllUser
+  getAllUser,
 };

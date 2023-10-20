@@ -15,28 +15,21 @@ import {
   Link as ChakraLink,
 } from '@chakra-ui/react';
 import Content from '../Content';
-import CreateCompany from './CreateCompany';
+import NewContact from './NewContact';
 import { Link } from 'react-router-dom';
-import CompanyCard from './CompanyCard';
+import ContactCard from './ContactCard';
 
-export default function CompanyList({
+export default function ContactList({
   accessToken,
-  addNewCompanyMutation,
+  addNewContactMutation,
   data,
-  updateCompanyMutation,
 }) {
-
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const RenderData = () => {
     return data?.data?.data?.map((data) => {
       return (
-        <CompanyCard
-          key={data.id}
-          data={data}
-          updateCompanyMutation={updateCompanyMutation}
-          accessToken={accessToken}
-        />
+        <ContactCard key={data.id} data={data} accessToken={accessToken} />
       );
     });
   };
@@ -47,7 +40,7 @@ export default function CompanyList({
         fontWeight="semibold"
         marginStart="12"
       >
-        Company Management
+        Contact Management
       </Text>
       <Box h="90%" w="90%" bg="#F5F6F6" mx="auto" marginTop={10}>
         <Flex
@@ -57,7 +50,7 @@ export default function CompanyList({
           marginRight={8}
         >
           <Button colorScheme="telegram" width={'max-content'} onClick={onOpen}>
-            Add New Company
+            Add New Contact
           </Button>
         </Flex>
         <TableContainer
@@ -68,14 +61,14 @@ export default function CompanyList({
           mb="4%"
         >
           <Table variant="striped" colorScheme="teal" size="sm">
-            <TableCaption>List of Company</TableCaption>
+            <TableCaption>List of Contact</TableCaption>
             <Thead>
               <Tr justifyContent={'center'}>
-                <Th>Company Name</Th>
-                <Th>Phone Number</Th>
-                <Th>Creator</Th>
-                <Th>Sales PIC</Th>
-                <Th textAlign={'center'}>Action</Th>
+                <Th>Name</Th>
+                <Th>Contact</Th>
+                <Th>Segment</Th>
+                <Th>CreatedAT</Th>
+                {/* <Th textAlign={"center"}>Action</Th> */}
               </Tr>
             </Thead>
             <Tbody>
@@ -84,10 +77,10 @@ export default function CompanyList({
           </Table>
         </TableContainer>
       </Box>
-      <CreateCompany
+      <NewContact
         isOpen={isOpen}
         onClose={onClose}
-        addNewCompanyMutation={addNewCompanyMutation}
+        addNewContactMutation={addNewContactMutation}
         accessToken={accessToken}
       />
     </Content>

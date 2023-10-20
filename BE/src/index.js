@@ -12,15 +12,18 @@ app.use("/public", express.static("public"));
 app.use(express.json());
 
 //started
+
 app.get("/api", (req, res) => {
   res.send(`Hello, this is my API start yunan`);
 });
 
 // Routers
-const { authRouters, userRouters, companyRouters } = require("./routers");
+const { authRouters, userRouters, companyRouters,contactRouters } = require("./routers");
+app.use('/Contact', contactRouters);
 app.use("/auth", authRouters);
 app.use("/user", userRouters);
 app.use("/company", companyRouters);
+
 
 app.use((error, req, res, next) => {
   console.log({ error });
