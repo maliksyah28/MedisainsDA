@@ -5,10 +5,10 @@ const getAllCompany = async (req, res) => {
   try {
     const {
       page = 1,
-      pageSize = 12,
+      pageSize = 10,
       order = "DESC",
       orderBy = "createdAt",
-      companyName
+      companyName,
     } = req.query;
     let search = {};
     if (companyName) {
@@ -21,12 +21,14 @@ const getAllCompany = async (req, res) => {
       limit,
       offset,
       order,
-      orderBy
+      orderBy,
     });
 
-    return res
-      .status(200)
-      .send({ message: "kambing", data: rows, totalPages: count });
+    return res.status(200).send({
+      message: "Success get all companies",
+      data: rows,
+      totalPages: count,
+    });
   } catch (error) {
     return res.status(500).send({ message: error });
   }
@@ -152,7 +154,9 @@ const deleteCompanyForce = async (req, res) => {
 const getParanoidCompany = async (req, res) => {
   try {
     const resGetCompany = await companyRepositories.getParanoidCompanies();
-    return res.status(200).send({ message: "kambing", data: resGetCompany });
+    return res
+      .status(200)
+      .send({ message: "Success get company", data: resGetCompany });
   } catch (error) {
     return res.status(error.statusCode || 500).send({
       message: error.message || error,

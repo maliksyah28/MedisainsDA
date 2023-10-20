@@ -14,7 +14,7 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Select
+  Select,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
@@ -23,10 +23,10 @@ export default function EditCompany({
   onClose,
   updateCompanyMutation,
   accessToken,
-  data
+  data,
 }) {
   const [companyData, setCompanyData] = useState({
-    ...data
+    ...data,
   });
 
   const onUpdateCompany = () => {
@@ -35,7 +35,7 @@ export default function EditCompany({
       companyName: "",
       phoneNumber: "",
       address: "",
-      description: ""
+      description: "",
     });
     onClose();
   };
@@ -44,7 +44,7 @@ export default function EditCompany({
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add New Company</ModalHeader>
+        <ModalHeader>Edit Company</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <FormControl isRequired>
@@ -56,7 +56,7 @@ export default function EditCompany({
               onChange={(e) =>
                 setCompanyData({
                   ...companyData,
-                  [e.target.name]: e.target.value
+                  [e.target.name]: e.target.value,
                 })
               }
             />
@@ -70,7 +70,7 @@ export default function EditCompany({
               onChange={(e) =>
                 setCompanyData({
                   ...companyData,
-                  [e.target.name]: e.target.value
+                  [e.target.name]: e.target.value,
                 })
               }
             />
@@ -84,7 +84,7 @@ export default function EditCompany({
               onChange={(e) =>
                 setCompanyData({
                   ...companyData,
-                  [e.target.name]: e.target.value
+                  [e.target.name]: e.target.value,
                 })
               }
             />
@@ -98,7 +98,7 @@ export default function EditCompany({
               onChange={(e) =>
                 setCompanyData({
                   ...companyData,
-                  [e.target.name]: e.target.value
+                  [e.target.name]: e.target.value,
                 })
               }
             />
@@ -110,7 +110,7 @@ export default function EditCompany({
             Close
           </Button>
           <Button colorScheme="telegram" onClick={onUpdateCompany}>
-            Create
+            Edit
           </Button>
         </ModalFooter>
       </ModalContent>

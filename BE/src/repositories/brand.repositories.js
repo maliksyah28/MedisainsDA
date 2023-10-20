@@ -1,21 +1,16 @@
-const { Company, Account } = require("../../models");
+const { Brand, Account } = require("../../models");
 const { Op, Sequelize } = require("sequelize");
 
-class CompanyRepository {
-  async getCompanies({ search, limit, offset, orderBy, order }) {
+class BrandRepository {
+  async getBrands({ search, limit, offset, orderBy, order }) {
     try {
-      const { count, rows } = await Company.findAndCountAll({
+      const { count, rows } = await Brand.findAndCountAll({
         order: Sequelize.literal(`${orderBy} ${order}`),
         where: { ...search },
         include: [
           {
             model: Account,
-            as: "creators",
-            attributes: ["fullname", "username"],
-          },
-          {
-            model: Account,
-            as: "salesPICs",
+            as: "brandPICs",
             attributes: ["fullname", "username"],
           },
         ],
@@ -29,21 +24,16 @@ class CompanyRepository {
     }
   }
 
-  async getCompany(data) {
+  async getBrand(data) {
     try {
-      return await Company.findOne({
+      return await Brand.findOne({
         where: {
-          [Op.or]: [{ id: data }, { companyName: data }],
+          [Op.or]: [{ id: data }, { brandName: data }],
         },
         include: [
           {
             model: Account,
-            as: "creators",
-            attributes: ["fullname", "username"],
-          },
-          {
-            model: Account,
-            as: "salesPICs",
+            as: "brandPICs",
             attributes: ["fullname", "username"],
           },
         ],
@@ -53,42 +43,39 @@ class CompanyRepository {
     }
   }
 
-  async createCompany(companyData) {
+  async createBrand(brandData) {
     try {
-      const resCreateCompany = await Company.create(companyData);
-      return await resCreateCompany;
+      const resCreateBrand = await Brand.create(brandData);
+      return await resCreateBrand;
     } catch (error) {
       throw error.errors[0].message;
     }
   }
 
-  async updateCompany(data, id) {
+  async updateBrand(data, id) {
     try {
-      const resUpdateCompany = await Company.update(
-        { ...data },
-        { where: { id } }
-      );
-      return await resUpdateCompany;
+      const resUpdateBrand = await Brand.update({ ...data }, { where: { id } });
+      return await resUpdateBrand;
     } catch (error) {
       return error.errors[0].message;
     }
   }
 
-  async deleteCompany(id, force) {
+  async deleteBrand(id, force) {
     try {
-      const resCreateCompany = await Company.destroy({
+      const resCreateBrand = await Brand.destroy({
         where: { id },
         force: force ? true : false,
       });
-      return await resCreateCompany;
+      return await resCreateBrand;
     } catch (error) {
       throw error.errors[0].message;
     }
   }
 
-  async getParanoidCompanies({ limit, offset }) {
+  async getParanoidBrands({ limit, offset }) {
     try {
-      const { count, rows } = await Company.findAndCountAll({
+      const { count, rows } = await Brand.findAndCountAll({
         where: {
           deletedAt: {
             [Op.ne]: null,
@@ -97,12 +84,7 @@ class CompanyRepository {
         include: [
           {
             model: Account,
-            as: "creators",
-            attributes: ["fullname", "username"],
-          },
-          {
-            model: Account,
-            as: "salesPICs",
+            as: "brandPICs",
             attributes: ["fullname", "username"],
           },
         ],
@@ -117,9 +99,9 @@ class CompanyRepository {
     }
   }
 
-  async restoreCompany(id) {
+  async restoreBrand(id) {
     try {
-      return await Company.restore({
+      return await Brand.restore({
         where: { id },
       });
     } catch (error) {
@@ -128,4 +110,4 @@ class CompanyRepository {
   }
 }
 
-module.exports = new CompanyRepository();
+module.exports = new BrandRepository();

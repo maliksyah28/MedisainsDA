@@ -47,7 +47,9 @@ export default function AuthIN() {
       const data = res.data.data;
       const resUser = await getUserByToken(data.accessToken);
 
-      dispatch(login(resUser.data.data));
+      dispatch(
+        login({ ...resUser.data.data, ["accessToken"]: data.accessToken })
+      );
       const userInfo = {
         accessToken: data.accessToken,
       };

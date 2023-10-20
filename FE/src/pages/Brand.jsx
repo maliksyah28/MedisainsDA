@@ -1,46 +1,48 @@
+import { Flex, useToast } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
-import { Flex, useToast } from "@chakra-ui/react";
-import CompanyList from "../components/Company/CompanyList";
-import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useQuery, useMutation, useQueryClient } from "react-query";
+import BrandList from "../components/Brand/BrandList";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
-  createCompany,
-  deleteCompany,
-  getAllCompanies,
-  updateCompany,
-} from "../api/companyApi";
+  createBrand,
+  deleteBrand,
+  getAllBrand,
+  updateBrand,
+} from "../api/brandApi";
 import Loading from "../components/Loading/Loading";
 
-function Company() {
+function Brand() {
   const toast = useToast();
+
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const user = useSelector((state) => state.auth);
+  const userInfo = localStorage.getItem("userInfo");
   let [searchParams, setSearchParams] = useSearchParams();
-  const [companyQuery, setCompanyQuery] = useState({
-    companyName: "",
+  const [brandQuery, setBrandQuery] = useState({
+    brandName: "",
     page: searchParams.get("page") || 1,
     pageSize: 8,
     orderBy: "createdAt",
     order: "DESC",
   });
-  const userInfo = localStorage.getItem("userInfo");
 
   // if no token navigate to login
   useEffect(() => {
     if (!userInfo) return navigate("/login");
   }, []);
   const accessToken = JSON.parse(userInfo)?.accessToken;
-  const user = useSelector((state) => state.auth);
 
-  const { data, isLoading, isError, error } = useQuery(
-    ["company", companyQuery, accessToken],
-    getAllCompanies
+  const { data, isLoading } = useQuery(
+    ["brand", brandQuery, accessToken],
+    getAllBrand
   );
-  const addNewCompanyMutation = useMutation(createCompany, {
+
+  const addNewBrandMutation = useMutation(createBrand, {
     onSuccess: (data) => {
-      queryClient.invalidateQueries("company");
+      queryClient.invalidateQueries("brand");
       toast({
         position: "top",
         title: "Success",
@@ -62,9 +64,9 @@ function Company() {
     },
   });
 
-  const updateCompanyMutation = useMutation(updateCompany, {
+  const updateBrandMutation = useMutation(updateBrand, {
     onSuccess: (data) => {
-      queryClient.invalidateQueries("company");
+      queryClient.invalidateQueries("brand");
       toast({
         position: "top",
         title: "Success",
@@ -86,9 +88,9 @@ function Company() {
     },
   });
 
-  const deleteCompanyMutation = useMutation(deleteCompany, {
+  const deleteBrandMutation = useMutation(deleteBrand, {
     onSuccess: (data) => {
-      queryClient.invalidateQueries("company");
+      queryClient.invalidateQueries("brand");
       toast({
         position: "top",
         title: "Success",
@@ -111,20 +113,21 @@ function Company() {
   });
 
   // if (isLoading) return <Loading />;
+
   return (
     <Flex justifyContent="center">
       <Navbar user={user} />
-      <CompanyList
+      <BrandList
         accessToken={accessToken}
         data={data}
-        addNewCompanyMutation={addNewCompanyMutation}
-        updateCompanyMutation={updateCompanyMutation}
-        deleteCompanyMutation={deleteCompanyMutation}
-        setCompanyQuery={setCompanyQuery}
-        companyQuery={companyQuery}
+        addNewBrandMutation={addNewBrandMutation}
+        updateBrandMutation={updateBrandMutation}
+        deleteBrandMutation={deleteBrandMutation}
+        setBrandQuery={setBrandQuery}
+        brandQuery={brandQuery}
       />
     </Flex>
   );
 }
 
-export default Company;
+export default Brand;
