@@ -15,7 +15,7 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   AlertDialogCloseButton,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 
 export default function CompanyDetailComponent({
@@ -23,7 +23,7 @@ export default function CompanyDetailComponent({
   userData,
   updateSalesPicMutation,
   accessToken,
-  user
+  user,
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedOption, setSelectedOption] = useState("placeholder");
@@ -33,7 +33,7 @@ export default function CompanyDetailComponent({
     updateSalesPicMutation.mutate({
       salesPIC: selectedOption,
       id: companyId,
-      accessToken
+      accessToken,
     });
     setSelectedOption("placeholder");
     onClose();
@@ -57,11 +57,12 @@ export default function CompanyDetailComponent({
     ));
   };
   const GetDate = () => {
+    console.log(data);
     const date = new Date(data?.data?.data?.createdAt);
     return date.toLocaleString("ID-id", {
       year: "numeric",
       month: "long",
-      day: "numeric"
+      day: "numeric",
     });
   };
 
@@ -77,11 +78,17 @@ export default function CompanyDetailComponent({
       >
         {data?.data?.data?.companyName}
       </Text>
-      <Box h="90%" w="90%" bg="#F5F6F6" mx="auto" marginTop={10}>
+      <Box minH="90%" w="90%" bg="#F5F6F6" mx="auto" marginTop={10}>
         <Flex p={10}>
-          <Box minH={"20"} backgroundColor={"white"} width={"25vw"} rounded={5}>
+          <Box
+            minH={"20"}
+            maxH={"50vh"}
+            backgroundColor={"white"}
+            width={"25vw"}
+            rounded={5}
+          >
             <VStack paddingInline={3}>
-              <Flex width={"full"} paddingTop={2}>
+              <Flex width={"full"} paddingTop={2} marginBottom={2}>
                 <Avatar
                   borderRadius={2}
                   size={"xl"}
@@ -98,14 +105,12 @@ export default function CompanyDetailComponent({
               </Flex>
               <Select
                 width={"60%"}
-                size={"xs"}
-                paddingTop={3}
+                size={"sm"}
                 bgColor={"telegram.500"}
                 borderColor={"telegram.500"}
                 color={"white"}
                 rounded={5}
                 value={selectedOption}
-                defaultValue={"placeholder"}
                 onChange={onSelectHandler}
                 isDisabled={isDisabledSelect}
               >
@@ -124,7 +129,12 @@ export default function CompanyDetailComponent({
                 </Flex>
                 <Flex justifyContent={"space-between"}>
                   <Text>Sales PIC:</Text>
-                  <Text fontWeight={"light"} align={"right"}>
+                  <Text
+                    maxWidth={"50%"}
+                    fontWeight={"light"}
+                    align={"right"}
+                    noOfLines={1}
+                  >
                     {data?.data?.data?.salesPICs?.fullname || "null"}
                   </Text>
                 </Flex>
@@ -142,7 +152,7 @@ export default function CompanyDetailComponent({
                 </Flex>
                 <Flex justifyContent={"space-between"}>
                   <Text>Address:</Text>
-                  <Text fontWeight={"light"} align={"right"}>
+                  <Text fontWeight={"light"} align={"right"} maxWidth={"50%"}>
                     {data?.data?.data?.address}
                   </Text>
                 </Flex>
@@ -154,7 +164,7 @@ export default function CompanyDetailComponent({
               50vw
             </Box>
             <Box
-              h={"30vh"}
+              h={"100vh"}
               w={"50vw"}
               bg={"yellow.300"}
               marginTop={10}

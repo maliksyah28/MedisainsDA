@@ -1,9 +1,34 @@
+const { Op } = require("sequelize");
 const companyRepositories = require("../repositories/company.repositories");
 
 const getAllCompany = async (req, res) => {
   try {
-    const resGetCompany = await companyRepositories.getCompanies();
-    return res.status(200).send({ message: "kambing", data: resGetCompany });
+    const {
+      page = 1,
+      pageSize = 10,
+      order = "DESC",
+      orderBy = "createdAt",
+      companyName,
+    } = req.query;
+    let search = {};
+    if (companyName) {
+      search = { companyName: { [Op.substring]: companyName } };
+    }
+    const limit = Number(pageSize);
+    const offset = (Number(page) - 1) * Number(pageSize);
+    const { count, rows } = await companyRepositories.getCompanies({
+      search,
+      limit,
+      offset,
+      order,
+      orderBy,
+    });
+
+    return res.status(200).send({
+      message: "Success get all companies",
+      data: rows,
+      totalPages: count,
+    });
   } catch (error) {
     return res.status(500).send({ message: error });
   }
@@ -18,7 +43,10 @@ const getCompanyDetail = async (req, res) => {
       .status(200)
       .send({ message: "Success get company detail", data: resGetCompany });
   } catch (error) {
-    return res.status(500).send({ message: error });
+    return res.status(error.statusCode || 500).send({
+      message: error.message || error,
+      statusCode: error.statusCode,
+    });
   }
 };
 
@@ -35,7 +63,7 @@ const createCompany = async (req, res) => {
     const creator = req.user.id;
     const newCompany = await companyRepositories.createCompany({
       ...req.body,
-      creator
+      creator,
     });
 
     if (!newCompany)
@@ -44,7 +72,7 @@ const createCompany = async (req, res) => {
   } catch (error) {
     return res.status(error.statusCode || 500).send({
       message: error.message || error,
-      statusCode: error.statusCode
+      statusCode: error.statusCode,
     });
   }
 };
@@ -77,7 +105,84 @@ const updateCompany = async (req, res) => {
   } catch (error) {
     return res.status(error.statusCode || 500).send({
       message: error.message || error,
-      statusCode: error.statusCode
+      statusCode: error.statusCode,
+    });
+  }
+};
+
+const deleteCompany = async (req, res) => {
+  try {
+    if (+req.user.role !== 1) throw { message: "Unauthorize", statusCode: 401 };
+
+    const { id } = req.params;
+    const resDeleteCompany = await companyRepositories.deleteCompany(id);
+    if (!resDeleteCompany) {
+      throw { message: "Failed to Delete Company Data", statusCode: 400 };
+    }
+
+    return res
+      .status(200)
+      .send({ message: "Success Delete Company Data", statusCode: 200 });
+  } catch (error) {
+    return res.status(error.statusCode || 500).send({
+      message: error.message || error,
+      statusCode: error.statusCode,
+    });
+  }
+};
+
+const deleteCompanyForce = async (req, res) => {
+  try {
+    if (+req.user.role !== 1) throw { message: "Unauthorize", statusCode: 401 };
+
+    const { id } = req.params;
+    const resDeleteCompany = await companyRepositories.deleteCompany(id, true);
+    if (resDeleteCompany) {
+      throw { message: "Failed to Delete Company Data", statusCode: 400 };
+    }
+    return res
+      .status(200)
+      .send({ message: "Success Delete Company Data", statusCode: 200 });
+  } catch (error) {
+    return res.status(error.statusCode || 500).send({
+      message: error.message || error,
+      statusCode: error.statusCode,
+    });
+  }
+};
+
+const getParanoidCompany = async (req, res) => {
+  try {
+    const resGetCompany = await companyRepositories.getParanoidCompanies();
+    return res
+      .status(200)
+      .send({ message: "Success get company", data: resGetCompany });
+  } catch (error) {
+    return res.status(error.statusCode || 500).send({
+      message: error.message || error,
+      statusCode: error.statusCode,
+    });
+  }
+};
+
+const restoreCompany = async (req, res) => {
+  try {
+    if (+req.user.role !== 1) throw { message: "Unauthorize", statusCode: 401 };
+
+    const resRestoreCompany = await companyRepositories.restoreCompany(
+      req.params.id
+    );
+
+    if (!resRestoreCompany) {
+      throw { message: "Failed to Restore Company Data", statusCode: 400 };
+    }
+    return res
+      .status(200)
+      .send({ message: "Success Restore Company Data", statusCode: 200 });
+  } catch (error) {
+    return res.status(error.statusCode || 500).send({
+      message: error.message || error,
+      statusCode: error.statusCode,
     });
   }
 };
@@ -86,5 +191,9 @@ module.exports = {
   getAllCompany,
   getCompanyDetail,
   createCompany,
-  updateCompany
+  updateCompany,
+  deleteCompany,
+  deleteCompanyForce,
+  getParanoidCompany,
+  restoreCompany,
 };

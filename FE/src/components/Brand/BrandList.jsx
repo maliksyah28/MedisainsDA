@@ -1,7 +1,12 @@
+import React, { useState } from "react";
+import Content from "../Content";
 import {
   Box,
   Button,
   Flex,
+  Input,
+  InputGroup,
+  InputRightElement,
   Table,
   TableCaption,
   TableContainer,
@@ -11,60 +16,55 @@ import {
   Thead,
   Tr,
   useDisclosure,
-  Input,
-  InputGroup,
-  InputRightElement,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
-import Content from "../Content";
-import CreateCompany from "./CreateCompany";
-import { useSearchParams } from "react-router-dom";
-import CompanyCard from "./CompanyCard";
-import { useState } from "react";
+import BrandCard from "./BrandCard";
+import CreateBrand from "./CreateBrand";
 import ReactPaginate from "react-paginate";
-import styles from "./company.module.css";
-import { Link } from "react-router-dom";
+import styles from "./brand.module.css";
+import { useSearchParams } from "react-router-dom";
 
-export default function CompanyList({
+export default function BrandList({
   accessToken,
-  addNewCompanyMutation,
-  updateCompanyMutation,
-  deleteCompanyMutation,
   data,
-  setCompanyQuery,
-  companyQuery,
+  addNewBrandMutation,
+  updateBrandMutation,
+  deleteBrandMutation,
+  setBrandQuery,
+  brandQuery,
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [search, setSearch] = useState();
   let [searchParams, setSearchParams] = useSearchParams();
-
-  const handlePageClick = (e) => {
-    setCompanyQuery({ ...companyQuery, ["page"]: e.selected + 1 });
-    setSearchParams({ page: e.selected + 1 });
-  };
-
-  const onSearchHandler = () => {
-    setCompanyQuery({ ...companyQuery, ["companyName"]: search });
-  };
-
-  const onKeyDownHandler = (e) => {
-    if (e.key === "Enter") {
-      setCompanyQuery({ ...companyQuery, ["companyName"]: search });
-    }
-  };
   const RenderData = () => {
     return data?.data?.data?.map((data) => {
       return (
-        <CompanyCard
+        <BrandCard
           key={data.id}
           data={data}
-          updateCompanyMutation={updateCompanyMutation}
-          deleteCompanyMutation={deleteCompanyMutation}
+          updateBrandMutation={updateBrandMutation}
+          deleteBrandMutation={deleteBrandMutation}
           accessToken={accessToken}
         />
       );
     });
   };
+
+  const handlePageClick = (e) => {
+    setBrandQuery({ ...brandQuery, ["page"]: e.selected + 1 });
+    setSearchParams({ page: e.selected + 1 });
+  };
+
+  const onSearchHandler = () => {
+    setBrandQuery({ ...brandQuery, ["brandName"]: search });
+  };
+
+  const onKeyDownHandler = (e) => {
+    if (e.key === "Enter") {
+      setBrandQuery({ ...brandQuery, ["brandName"]: search });
+    }
+  };
+
   return (
     <Content>
       <Text
@@ -72,15 +72,15 @@ export default function CompanyList({
         fontWeight="semibold"
         marginStart="12"
       >
-        Company Management
+        Brand Management
       </Text>
       <Box minH="85vh" w="90%" bg="#F5F6F6" mx="auto" marginTop={10}>
         <Flex
           width="100%"
           justifyContent={"space-between"}
-          marginBottom={8}
           marginTop={4}
           marginRight={8}
+          marginBottom={10}
         >
           <InputGroup size="md" width={"20%"} marginLeft={8}>
             <Input
@@ -102,12 +102,12 @@ export default function CompanyList({
             </InputRightElement>
           </InputGroup>
           <Button
-            marginRight={8}
             colorScheme="telegram"
             width={"max-content"}
+            marginRight={8}
             onClick={onOpen}
           >
-            Add New Company
+            Add New Brand
           </Button>
         </Flex>
         <TableContainer
@@ -121,9 +121,7 @@ export default function CompanyList({
             <TableCaption>List of Company</TableCaption>
             <Thead>
               <Tr justifyContent={"center"}>
-                <Th>Company Name</Th>
-                <Th>Phone Number</Th>
-                <Th>Creator</Th>
+                <Th>Brand Name</Th>
                 <Th>Sales PIC</Th>
                 <Th textAlign={"center"}>Action</Th>
               </Tr>
@@ -134,20 +132,20 @@ export default function CompanyList({
           </Table>
         </TableContainer>
       </Box>
-      <CreateCompany
+      <CreateBrand
         isOpen={isOpen}
         onClose={onClose}
-        addNewCompanyMutation={addNewCompanyMutation}
+        addNewBrandMutation={addNewBrandMutation}
         accessToken={accessToken}
       />
       {data && (
         <ReactPaginate
-          forcePage={companyQuery.page - 1}
+          forcePage={brandQuery.page - 1}
           breakLabel="..."
           nextLabel="next >"
           onPageChange={handlePageClick}
           pageRangeDisplayed={2}
-          pageCount={Math.ceil(data.data.totalPages / companyQuery.pageSize)}
+          pageCount={Math.ceil(data.data.totalPages / brandQuery.pageSize)}
           previousLabel="< previous"
           renderOnZeroPageCount={null}
           containerClassName={styles.pagination}

@@ -45,8 +45,10 @@ function AccountManagementContent({ data, addNewUserMutation, accessToken }) {
           <Td>{data.email}</Td>
           <Td>{roles[data.role]}</Td>
           <Td textAlign={"center"}>
-            <Button colorScheme="green">Edit</Button>
-            <Button colorScheme="red" marginLeft={6}>
+            <Button colorScheme="green" size={"sm"}>
+              Edit
+            </Button>
+            <Button colorScheme="red" marginLeft={6} size={"sm"}>
               Delete
             </Button>
           </Td>

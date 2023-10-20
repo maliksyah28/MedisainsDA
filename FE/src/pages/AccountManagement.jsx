@@ -1,17 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar/Navbar";
-import { Flex, useToast } from "@chakra-ui/react";
+import { Flex, SkeletonText, useToast } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import AccountManagementContent from "../components/AccountManagementContent/AccountManagementContent";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { getAllUsers, register } from "../api/userApi";
+import { useNavigate } from "react-router-dom";
+import Loading from "../components/Loading/Loading";
 
 export default function AccountManagement() {
   const toast = useToast();
   const queryClient = useQueryClient();
   const user = useSelector((state) => state.auth);
   const userInfo = localStorage.getItem("userInfo");
-  const accessToken = JSON.parse(userInfo).accessToken;
+  const navigate = useNavigate();
+
+  // if no accessToken navigate to login
+  useEffect(() => {
+    if (!userInfo) return navigate("/login");
+  }, []);
+
+  const accessToken = JSON.parse(userInfo)?.accessToken;
   const { data, isLoading, isError, error } = useQuery("users", () =>
     getAllUsers(accessToken)
   );
@@ -21,11 +30,11 @@ export default function AccountManagement() {
       queryClient.invalidateQueries("users");
       toast({
         position: "top",
-        title: "Account created.",
+        title: "Success",
         description: data.data.message,
         status: "success",
         duration: 2000,
-        isClosable: true
+        isClosable: true,
       });
     },
     onError: (data) => {
@@ -35,12 +44,12 @@ export default function AccountManagement() {
         description: data.response.data.message,
         status: "error",
         duration: 2000,
-        isClosable: true
+        isClosable: true,
       });
-    }
+    },
   });
 
-  if (isLoading) return <div>Loading..............</div>;
+  // if (isLoading) return <Loading />;
   return (
     <Flex justifyContent="center">
       <Navbar user={user} />

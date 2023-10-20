@@ -12,16 +12,14 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
-  AlertDialogCloseButton,
 } from "@chakra-ui/react";
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
-import EditCompany from "./EditCompany";
-
-export default function CompanyCard({
+import EditBrand from "./EditBrand";
+export default function BrandCard({
   data,
-  updateCompanyMutation,
-  deleteCompanyMutation,
+  updateBrandMutation,
+  deleteBrandMutation,
   accessToken,
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -30,11 +28,10 @@ export default function CompanyCard({
     onOpen: onDeleteOpen,
     onClose: onDeleteClose,
   } = useDisclosure();
-
   const cancelRef = useRef();
 
   const onDeleteHandler = () => {
-    deleteCompanyMutation.mutate({ accessToken, id: data.id });
+    deleteBrandMutation.mutate({ accessToken, id: data.id });
     onDeleteClose();
   };
 
@@ -42,7 +39,7 @@ export default function CompanyCard({
     <>
       <Tr key={data.id}>
         <Td>
-          <Link to={`/company/${data.companyName}`}>
+          <Link to={`/brand/${data.brandName}`}>
             {" "}
             <Flex
               alignItems={"center"}
@@ -51,16 +48,19 @@ export default function CompanyCard({
                 color: "teal.500",
               }}
             >
-              <Avatar borderRadius={2} size={"sm"} name={data.companyName} />
+              <Avatar
+                borderRadius={2}
+                size={"sm"}
+                name={data.brandName}
+                src={import.meta.env.VITE_BASE_URL + data.brandImage}
+              />
               <Text fontWeight={"medium"} marginLeft={2}>
-                {data.companyName}
+                {data.brandName}
               </Text>
             </Flex>
           </Link>
         </Td>
-        <Td>{data.phoneNumber}</Td>
-        <Td>{data.creators?.username}</Td>
-        <Td>{data.salesPICs?.fullname}</Td>
+        <Td>{data.brandPICs?.username}</Td>
         <Td textAlign={"center"}>
           <Button colorScheme="green" onClick={onOpen} size={"sm"}>
             Edit
@@ -75,10 +75,10 @@ export default function CompanyCard({
           </Button>
         </Td>
       </Tr>
-      <EditCompany
+      <EditBrand
         isOpen={isOpen}
         onClose={onClose}
-        updateCompanyMutation={updateCompanyMutation}
+        updateBrandMutation={updateBrandMutation}
         accessToken={accessToken}
         data={data}
       />
@@ -90,7 +90,7 @@ export default function CompanyCard({
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete Company
+              Delete Brand
             </AlertDialogHeader>
 
             <AlertDialogBody>
