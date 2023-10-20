@@ -8,6 +8,7 @@ import Company from "../pages/Company";
 import CompanyDetail from "../pages/CompanyDetail";
 import Brand from "../pages/Brand";
 import BrandDetail from "../pages/BrandDetail";
+import Contact from '../pages/Contact';
 
 function AppRoute() {
   return (
@@ -16,10 +17,12 @@ function AppRoute() {
       <Route exact path="/login" element={<Login />} />
       <Route exact path="/registerAdmin" element={<RegisterAdmin />} />
       <Route exact path="/account-management" element={<AccountManagement />} />
+
       <Route exact path="/company" element={<Company />} />
       <Route exact path="/company/:companyName" element={<CompanyDetail />} />
       <Route exact path="/brand" element={<Brand />} />
       <Route exact path="/brand/:brandName" element={<BrandDetail />} />
+      <Route exact path="/Contact" element={<Contact />} />
     </Routes>
   );
 }

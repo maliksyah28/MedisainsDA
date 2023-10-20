@@ -94,6 +94,18 @@ export default function Navbar({ user }) {
             Brand
           </Text>
         </Box>
+        <Box
+          h="10"
+          cursor="pointer"
+          paddingLeft={10}
+          paddingBlock={2}
+          onClick={() => navigate("/Contact")}
+          bg={location.pathname.includes("Contact") ? "#1E90FF" : "unset"}
+        >
+          <Text color="white" ms="2">
+            Contact
+          </Text>
+        </Box>
         {/* <Box
           h="10"
           cursor="pointer"

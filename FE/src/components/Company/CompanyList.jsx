@@ -23,6 +23,8 @@ import CompanyCard from "./CompanyCard";
 import { useState } from "react";
 import ReactPaginate from "react-paginate";
 import styles from "./company.module.css";
+import { Link } from "react-router-dom";
+
 export default function CompanyList({
   accessToken,
   addNewCompanyMutation,
@@ -76,9 +78,9 @@ export default function CompanyList({
         <Flex
           width="100%"
           justifyContent={"space-between"}
+          marginBottom={8}
           marginTop={4}
           marginRight={8}
-          marginBottom={10}
         >
           <InputGroup size="md" width={"20%"} marginLeft={8}>
             <Input

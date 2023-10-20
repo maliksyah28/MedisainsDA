@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Link, Navigate } from "react-router-dom";
-import { changePass, getUserByToken } from "../../api/userApi";
+import React, { useState, useRef, useEffect } from 'react';
+import { Link, Navigate } from 'react-router-dom';
+import { changePass, getUserByToken } from '../../api/userApi';
 import {
   Modal,
   ModalOverlay,
@@ -13,9 +13,11 @@ import {
   Button,
   FormControl,
   FormLabel,
-  Input
-} from "@chakra-ui/react";
-import { EditIcon } from "@chakra-ui/icons";
+  Input,
+  useToast,
+} from '@chakra-ui/react';
+import { EditIcon } from '@chakra-ui/icons';
+import { useSelector } from 'react-redux';
 export default function PasswordManage() {
   const OverlayOne = () => (
     <ModalOverlay
@@ -25,9 +27,10 @@ export default function PasswordManage() {
   );
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [overlay, setOverlay] = React.useState(<OverlayOne />);
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [ConfirmPassword, setConfirmPassword] = useState("");
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [ConfirmPassword, setConfirmPassword] = useState('');
+  const getIDStore = useSelector((state) => state.auth.id);
 
   const oldPasswordHandleChange = (event) => {
     setOldPassword(event.target.value);
@@ -38,16 +41,38 @@ export default function PasswordManage() {
   const ConfirmPasswordHandleChange = (event) => {
     setConfirmPassword(event.target.value);
   };
-
+  let local = JSON.parse(localStorage.getItem('userInfo'));
+  const toast = useToast();
   const CPClick = async () => {
     try {
-      const resID = await getUserByToken();
-      console.log(resID);
       const body = {
+        id: getIDStore,
         oldPassword: oldPassword,
         newPassword: newPassword,
-        ConfirmPassword: ConfirmPassword
+        ConfirmPassword: ConfirmPassword,
+        token: local.accessToken,
       };
+      const res = await changePass(body);
+      if (res.status === 200) {
+        toast({
+          description: res.data.message,
+          position: 'top',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+          onClose,
+        });
+      } else {
+        toast({
+          description: res.data.message,
+          position: 'top',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+
+      onClose;
     } catch (error) {
       console.log(error);
     }
